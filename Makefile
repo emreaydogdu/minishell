@@ -1,9 +1,9 @@
-NAME	=	philo
+NAME	=	minishell
 CC		=	cc
 CFLAGS	=	#-Wall -Wextra -Werror
 RM		=	rm -f -r
 
-SRCC	=	#...
+SRCC	=	minishell.c
 OBJD	=	obj
 SRCD	=	src
 SRCS	=	$(addprefix $(SRCD)/,$(SRCC))
