@@ -4,7 +4,7 @@ RL		=	-lreadline
 CFLAGS	=	#-Wall -Wextra -Werror
 RM		=	rm -f -r
 
-SRCC	=	minishell.c
+SRCC	=	minishell.c lexer.c
 OBJD	=	obj
 SRCD	=	src
 SRCS	=	$(addprefix $(SRCD)/,$(SRCC))
