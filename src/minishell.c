@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emaydogd <emaydogd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/06/27 15:00:12 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/07/01 13:58:15 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 size_t	ft_strlen(const char *s)
 {
@@ -35,11 +34,13 @@ void minishell()
 		printf("%s", line);
 		line[ft_strlen(line)-1] = '\0';
 		// ... parse & execute with var line
+		init_lexer(line);
 	}
 	free(line);
 }
 
-int main() {
+int main(int ac, char **av) 
+{
 	minishell();
-	return 0;
+	return (0);
 }

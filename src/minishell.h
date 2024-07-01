@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emaydogd <emaydogd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/06/27 13:37:32 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/07/01 13:54:08 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef MINISHELL_H
-#define MINISHELL_H
 
-#define BANNER "\
+#ifndef MINISHELL_H
+# define MINISHELL_H
+# include <stdio.h>
+# include <stdlib.h>
+
+# define BANNER "\
 ######################################################################################\n\
 ██╗  ██╗██████╗ ███████╗██╗  ██╗███████╗██╗     ██╗ \n\
 ██║  ██║╚════██╗██╔════╝██║  ██║██╔════╝██║     ██║ \n\
@@ -29,5 +32,32 @@
  ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═════╝       ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝ \n\
 ######################################################################################\n\
 "
+
+typedef enum	s_token_type
+{
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_REDIR_APPEND,
+	TOKEN_REDIR_HEREDOC,
+	TOKEN_AND_IF,
+	TOKEN_OR_IF,
+	TOKEN_SEMICOLON,
+	TOKEN_NEWLINE,
+	TOKEN_EOF
+}			t_token_type;
+
+typedef struct s_lexer
+{
+	char			*input;
+	size_t			pos;
+	t_token_type	*type;
+}				t_lexer;
+
+
+
+t_lexer		*init_lexer(char *input);
+void		minishell(void);
 
 #endif
