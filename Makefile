@@ -1,5 +1,6 @@
 NAME	=	minishell
 CC		=	cc
+RL		=	-lreadline
 CFLAGS	=	#-Wall -Wextra -Werror
 RM		=	rm -f -r
 
@@ -12,7 +13,7 @@ OBJS	=	$(addprefix $(OBJD)/,$(SRCC:.c=.o))
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-			@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+			@$(CC) $(CFLAGS) $(RL) $(OBJS) -o $(NAME)
 			@echo "Compile program"
 
 $(OBJD)/%.o: $(SRCD)/%.c
