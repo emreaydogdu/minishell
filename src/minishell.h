@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/07/02 12:04:20 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/07/02 14:21:52 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@
 
 typedef enum	s_token_type
 {
-	TOKEN_PIPE = 0,
+	TOKEN_NOF = 0,
+	TOKEN_PIPE
 	/* TOKEN_WORD,
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
@@ -82,7 +83,7 @@ typedef struct s_shell
 	struct s_parser	*parser;
 }				t_shell;
 
-t_lexer		*init_lexer(char *input);
+t_lexer		*init_lexer(t_shell shell);
 void		minishell(void);
 
 #endif
