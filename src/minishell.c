@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/07/01 15:12:00 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/07/02 12:07:32 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,17 @@ size_t	ft_strlen(const char *s)
 
 void minishell()
 {
-	char *buf;
+	struct s_shell	shell;
 
 	while (1) {
 		printf("\033[36;1m%s\033[0m", "➜ minishell$ ");
-		buf = readline("");
+		shell.cmdline = readline("");
 		
-		if (!buf)
+		if (!shell.cmdline)
 			return ;
-		buf[ft_strlen(buf)] = '\0';
+		shell.cmdline[ft_strlen(shell.cmdline)] = '\0';
 		// ... parse & execute with var line
-		init_lexer(buf);
+		init_lexer(shell.cmdline);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/07/01 15:05:31 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/07/02 12:04:20 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,17 @@ typedef enum	s_token_type
 	TOKEN_EOF */
 }			t_token_type;
 
+typedef enum s_std_cmd
+{
+	CMD_CD = 0,
+	CMD_ECHO,
+	CMD_EXIT,
+	CMD_PWD,
+	CMD_EXPORT,
+	CMD_UNSET,
+	CMD_ENV
+}			t_std_cmd;
+
 typedef struct s_lexer
 {
 	char			*input;
@@ -55,6 +66,21 @@ typedef struct s_lexer
 	int				type;
 	struct s_lexer	*next;
 }				t_lexer;
+
+typedef struct s_parser
+{
+	char					*cmd;
+	int						std_cmd;
+	struct s_parser_node	*left;
+	struct s_parser_node	*right;
+}				t_parser;
+
+typedef struct s_shell
+{
+	char			*cmdline;
+	struct s_lexer	*lexer;
+	struct s_parser	*parser;
+}				t_shell;
 
 t_lexer		*init_lexer(char *input);
 void		minishell(void);
