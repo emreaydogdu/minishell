@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/07/02 12:07:32 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/07/02 14:24:41 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void minishell()
 			return ;
 		shell.cmdline[ft_strlen(shell.cmdline)] = '\0';
 		// ... parse & execute with var line
-		init_lexer(shell.cmdline);
+		init_lexer(shell);
 	}
 }
 
