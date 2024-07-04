@@ -1,6 +1,6 @@
 NAME	=	minishell
 CC		=	cc
-RL		=	-lreadline
+RL		=	-lreadline -L .brew/opt/readline/lib -I .brew/opt/readline/include
 CFLAGS	=	#-Wall -Wextra -Werror
 RM		=	rm -f -r
 

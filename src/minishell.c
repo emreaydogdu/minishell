@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/07/04 14:03:32 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/07/04 15:08:57 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
+static void
+int_handler(int status) {
+	rl_on_new_line(); // Regenerate the prompt on a newline
+	printf("%d\n", status); // Move to a new line
+	rl_replace_line(""); // Clear the previous text
+	rl_redisplay();
+}
+
+
 void minishell()
 {
 	t_shell	shell;
@@ -32,7 +41,7 @@ void minishell()
     shell.lexer = NULL;
 
 	while (1) {
-		//printf("\033[36;1m%s\033[0m", "➜ minishell$ ");
+		signal(SIGINT, int_handler);
 		shell.cmdline = readline("\033[36;1m➜ minishell$ \033[0m");
 		
 		if (!shell.cmdline)
