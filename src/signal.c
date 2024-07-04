@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,43 +11,11 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <signal.h>
 
-size_t ft_strlen(const char *s)
+void int_handler(int status)
 {
-	size_t i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-void minishell()
-{
-	t_shell shell;
-
-	shell.lexer = NULL;
-
-	while (1)
-	{
-		signal(SIGINT, int_handler);
-		shell.cmdline = readline("\033[36;1m➜ minishell$ \033[0m");
-
-		if (!shell.cmdline)
-			return;
-		shell.cmdline[ft_strlen(shell.cmdline)] = '\0';
-		add_history(shell.cmdline);
-		// ... parse & execute with var line
-		init_lexer(shell);
-	}
-}
-
-int main(int ac, char **av)
-{
-	minishell();
-	return (0);
+    printf("\n");           // Move to a new liner
+    rl_replace_line("", 0); // Clear the previous text
+    rl_on_new_line();
+    rl_redisplay();
 }

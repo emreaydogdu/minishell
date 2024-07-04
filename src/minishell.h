@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-# define MINISHELL_H
-# include <stdio.h>
-# include <stdlib.h>
+#define MINISHELL_H
+#include <stdio.h>
+#include <stdlib.h>
 
-# define BANNER "\
+#define BANNER "\
 ######################################################################################\n\
 ██╗  ██╗██████╗ ███████╗██╗  ██╗███████╗██╗     ██╗ \n\
 ██║  ██║╚════██╗██╔════╝██║  ██║██╔════╝██║     ██║ \n\
@@ -33,7 +33,7 @@
 ######################################################################################\n\
 "
 
-typedef enum	s_token_type
+typedef enum s_token_type
 {
 	TOKEN_NOF = 0,
 	TOKEN_WORD,
@@ -46,7 +46,7 @@ typedef enum	s_token_type
 	/*TOKEN_AND_IF,
 	TOKEN_OR_IF,
 	TOKEN_EOF */
-}			t_token_type;
+} t_token_type;
 
 typedef enum s_std_cmd
 {
@@ -57,32 +57,35 @@ typedef enum s_std_cmd
 	CMD_EXPORT,
 	CMD_UNSET,
 	CMD_ENV
-}			t_std_cmd;
+} t_std_cmd;
 
 typedef struct s_lexer
 {
-	char			*input;
-	size_t			pos;
-	int				type;
-	struct s_lexer	*next;
-}				t_lexer;
+	char *input;
+	size_t pos;
+	int type;
+	struct s_lexer *next;
+} t_lexer;
 
 typedef struct s_parser
 {
-	char					*cmd;
-	int						std_cmd;
-	struct s_parser_node	*left;
-	struct s_parser_node	*right;
-}				t_parser;
+	char *cmd;
+	int std_cmd;
+	struct s_parser_node *left;
+	struct s_parser_node *right;
+} t_parser;
 
 typedef struct s_shell
 {
-	char			*cmdline;
-	struct s_lexer	*lexer;
-	struct s_parser	*parser;
-}				t_shell;
+	char *cmdline;
+	struct s_lexer *lexer;
+	struct s_parser *parser;
+} t_shell;
 
-t_lexer		*init_lexer(t_shell shell);
-void		minishell(void);
+t_lexer *init_lexer(t_shell shell);
+void minishell(void);
+
+//// SIGNAL ////
+void int_handler(int status);
 
 #endif
