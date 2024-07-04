@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "*.h": "c"
+    },
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/**"
+    ],
+    "C_Cpp.default.defines": [
+        "_DEBUG",
+        "UNICODE",
+        "_UNICODE"
+    ],
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+}

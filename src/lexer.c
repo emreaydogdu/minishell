@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:54:47 by chbachir          #+#    #+#             */
-/*   Updated: 2024/07/02 14:32:27 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/07/04 13:32:26 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	print_lexer(t_shell shell)
 {
-	const char *enum_dict[] = { "WORD", "PIPE" };
+	const char *enum_dict[] = { "NOF", "WORD", "PIPE", "SEMICOLON", "REDIRECT_IN", "REDIRECT_OUT", "REDIRECT_APPEND", "REDIRECT_HEREDOC"};
 	while (shell.lexer != NULL)
 	{
 		printf("%10s - type: %6s  pos: %zu\n", shell.lexer->input, enum_dict[shell.lexer->type], shell.lexer->pos);
@@ -22,10 +22,11 @@ static void	print_lexer(t_shell shell)
 	}
 }
 
-int	push(t_lexer **lexer, char *input, t_token_type type, size_t pos) {
-	struct s_lexer* token = malloc(sizeof(t_lexer));
+int	push(t_lexer **lexer, char *input, t_token_type type, size_t pos)
+{
+	t_lexer* token = malloc(sizeof(t_lexer));
 
-	// Assign data to the new node
+	// Assign data to the new TOKEN
 	token->input = input;
 	token->type = type;
 	token->pos = pos;
@@ -38,10 +39,9 @@ int	push(t_lexer **lexer, char *input, t_token_type type, size_t pos) {
 	}
 
 	// Else traverse till the last node
-	struct s_lexer* last = *lexer;
-	while (last->next != NULL) {
+	t_lexer* last = *lexer;
+	while (last->next != NULL)
 		last = last->next;
-	}
 
 	// Change the next of last node
 	last->next = token;
@@ -71,11 +71,58 @@ t_lexer		*init_lexer(t_shell shell)
 
 	while (shell.cmdline[count] != '\0')
 	{
-		if (shell.cmdline[count] == ' ')
+        if (shell.cmdline[count] == '<' && shell.cmdline[count+1] == '<')
+        {
+            if (start != 0)
+            {
+                pos += push(&shell.lexer, search_cmd(shell.cmdline, start-1, count), TOKEN_REDIR_APPEND, pos);
+                start = 0;
+            }
+            pos += push(&shell.lexer, "<<", TOKEN_REDIR_HEREDOC, pos);
+            count++;
+        }
+        else if (shell.cmdline[count] == '>' && shell.cmdline[count+1] == '>')
+        {
+            if (start != 0)
+            {
+                pos += push(&shell.lexer, search_cmd(shell.cmdline, start-1, count), TOKEN_REDIR_APPEND, pos);
+                start = 0;
+            }
+            pos += push(&shell.lexer, ">>", TOKEN_REDIR_APPEND, pos);
+            count++;
+        }
+        else if (shell.cmdline[count] == '>')
+        {
+            if (start != 0)
+            {
+                pos += push(&shell.lexer, search_cmd(shell.cmdline, start-1, count), TOKEN_REDIR_OUT, pos);
+                start = 0;
+            }
+            pos += push(&shell.lexer, ">", TOKEN_REDIR_OUT, pos);
+        }
+        else if (shell.cmdline[count] == '<')
+        {
+            if (start != 0)
+            {
+                pos += push(&shell.lexer, search_cmd(shell.cmdline, start-1, count), TOKEN_REDIR_IN, pos);
+                start = 0;
+            }
+            pos += push(&shell.lexer, "<", TOKEN_REDIR_IN, pos);
+        }
+        else if (shell.cmdline[count] == ';')
+        {
+            if (start != 0)
+            {
+                pos += push(&shell.lexer, search_cmd(shell.cmdline, start-1, count), TOKEN_WORD, pos);
+                start = 0;
+            }
+            pos += push(&shell.lexer, ";", TOKEN_SEMICOLON, pos);
+        }
+		else if (shell.cmdline[count] == ' ')
 		{
 			if (start != 0)
 			{
-				pos += push(&shell.lexer, search_cmd(shell.cmdline, start-1, count), TOKEN_NOF, pos);
+				pos += push(&shell.lexer, search_cmd(shell.cmdline, start-1, count), TOKEN_WORD, pos);
 				start = 0;
 			}
 		}
@@ -83,7 +130,7 @@ t_lexer		*init_lexer(t_shell shell)
 		{
 			if (start != 0)
 			{
-				pos += push(&shell.lexer, search_cmd(shell.cmdline, start-1, count-1), TOKEN_NOF, pos);
+				pos += push(&shell.lexer, search_cmd(shell.cmdline, start-1, count-1), TOKEN_PIPE, pos);
 				start = 0;
 			}
 			pos += push(&shell.lexer, "|", TOKEN_PIPE, pos);
@@ -96,7 +143,7 @@ t_lexer		*init_lexer(t_shell shell)
 		count++;
 	}
 	if (start != 0)
-		push(&shell.lexer, search_cmd(shell.cmdline, start-1, count), TOKEN_NOF, pos);
+		push(&shell.lexer, search_cmd(shell.cmdline, start-1, count), TOKEN_WORD, pos);
 	print_lexer(shell);
 	return (NULL);
 }

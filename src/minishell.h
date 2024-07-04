@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/07/02 14:21:52 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/07/04 13:31:06 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,15 @@
 typedef enum	s_token_type
 {
 	TOKEN_NOF = 0,
-	TOKEN_PIPE
-	/* TOKEN_WORD,
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_SEMICOLON,
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
 	TOKEN_REDIR_APPEND,
 	TOKEN_REDIR_HEREDOC,
-	TOKEN_AND_IF,
+	/*TOKEN_AND_IF,
 	TOKEN_OR_IF,
-	TOKEN_SEMICOLON,
-	TOKEN_NEWLINE,
 	TOKEN_EOF */
 }			t_token_type;
 
