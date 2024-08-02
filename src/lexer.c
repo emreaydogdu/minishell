@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:54:47 by chbachir          #+#    #+#             */
-/*   Updated: 2024/07/04 13:32:26 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/07/08 11:30:34 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_lexer		*init_lexer(t_shell shell)
 
 	while (shell.cmdline[count] != '\0')
 	{
-        if (shell.cmdline[count] == '<' && shell.cmdline[count+1] == '<')
+        if (shell.cmdline[count] == '<' && shell.cmdline[count+1] == '<') // <<
         {
             if (start != 0)
             {
@@ -81,7 +81,7 @@ t_lexer		*init_lexer(t_shell shell)
             pos += push(&shell.lexer, "<<", TOKEN_REDIR_HEREDOC, pos);
             count++;
         }
-        else if (shell.cmdline[count] == '>' && shell.cmdline[count+1] == '>')
+        else if (shell.cmdline[count] == '>' && shell.cmdline[count+1] == '>') // >>
         {
             if (start != 0)
             {
