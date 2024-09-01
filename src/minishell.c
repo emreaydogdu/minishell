@@ -35,12 +35,11 @@ void minishell()
 		if (!shell.cmdline)
 			return ;
 		shell.cmdline[ft_strlen(shell.cmdline)] = '\0';
-		// ... parse & execute with var line
 		init_lexer(shell);
 	}
 }
 
-int main(int ac, char **av) 
+int main(int ac, char **av)
 {
 	minishell();
 	return (0);

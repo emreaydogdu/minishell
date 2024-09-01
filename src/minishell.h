@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/07/02 14:21:52 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/01 17:21:05 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 # include <stdio.h>
 # include <stdlib.h>
+#include "../libft/libft.h"
 
 # define BANNER "\
 ######################################################################################\n\
@@ -36,7 +37,12 @@
 typedef enum	s_token_type
 {
 	TOKEN_NOF = 0,
-	TOKEN_PIPE
+	TOKEN_PIPE,
+	TOKEN_REDIR_APPEND,
+	TOKEN_REDIR_HEREDOC,
+	TOKEN_REDIR_OUT,
+	TOKEN_REDIR_IN,
+	TOKEN_COMMAND
 	/* TOKEN_WORD,
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
@@ -84,6 +90,7 @@ typedef struct s_shell
 }				t_shell;
 
 t_lexer		*init_lexer(t_shell shell);
+void		expander(t_shell *shell);
 void		minishell(void);
 
 #endif
