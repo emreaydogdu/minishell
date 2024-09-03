@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:54:47 by chbachir          #+#    #+#             */
-/*   Updated: 2024/08/30 22:12:19 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:02:10 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	print_lexer(t_shell shell)
 {
-	const char *enum_dict[] = { "NOF", "PIPE", "TOKEN_REDIR_APPEND", "TOKEN_REDIR_HEREDOC", "TOKEN_REDIR_OUT", "TOKEN_REDIR_IN"};
+	const char *enum_dict[] = { "ARG", "PIPE", "TOKEN_REDIR_APPEND", "TOKEN_REDIR_HEREDOC", "TOKEN_REDIR_OUT", "TOKEN_REDIR_IN"};
 	if (shell.lexer == NULL)
 		printf("Lexer is empty\n");
 	while (shell.lexer != NULL)
@@ -68,9 +68,45 @@ void decode_lexer(char **str, t_shell *shell)
 		else if (ft_strncmp(str[i], ">", 1) == 0)
 			push(&shell->lexer, ">", TOKEN_REDIR_IN, pos);
 		else
-			push(&shell->lexer, str[i], TOKEN_NOF, pos);
+			push(&shell->lexer, str[i], TOKEN_ARG, pos);
 		pos++;
 		i++;
+	}
+}
+
+void print_cmd(t_mini *cmd)
+{
+	int i = 0;
+
+	printf("		infile: %d\n", cmd->infile);
+	printf("		outfile: %d\n", cmd->outfile);
+	printf("		full_path: %s\n", cmd->full_path ? cmd->full_path : "NULL (because command is a builtin)");
+	if (cmd->full_cmd)
+	{
+		while (cmd->full_cmd)
+		{
+			printf("		Arg[%d]: %s\n", i, (char *)cmd->full_cmd->content);
+			i++;
+			cmd->full_cmd = cmd->full_cmd->next;
+		}
+	}
+	else
+		printf("  No command arguments.\n");
+
+}
+
+void print_cmdtable(t_prompt *prompt)
+{
+	t_list *current_node = prompt->cmds;
+	int cmd_num = 1;
+
+	printf("Command Table:\n");
+	while (current_node)
+	{
+		t_mini *cmd = (t_mini *)current_node->content;
+		printf("\n	Command %d:\n", cmd_num++);
+		print_cmd(cmd);
+		current_node = current_node->next;
 	}
 }
 
@@ -80,5 +116,13 @@ t_lexer		*init_lexer(t_shell shell)
 	decode_lexer(str, &shell);
 	expander(&shell);
 	print_lexer(shell);
+
+
+	t_prompt prompt;
+	prompt.cmds = NULL;
+	prompt.envp = NULL;
+	prompt.pid = getpid();
+	parse_tokens(shell.lexer, &prompt);
+	print_cmdtable(&prompt);
 	return (NULL);
 }

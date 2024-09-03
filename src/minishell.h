@@ -36,7 +36,7 @@
 
 typedef enum	s_token_type
 {
-	TOKEN_NOF = 0,
+	TOKEN_ARG = 0,
 	TOKEN_PIPE,
 	TOKEN_REDIR_APPEND,
 	TOKEN_REDIR_HEREDOC,
@@ -89,8 +89,26 @@ typedef struct s_shell
 	struct s_parser	*parser;
 }				t_shell;
 
+
+typedef struct s_prompt
+{
+	t_list	*cmds;
+	char	**envp;
+	pid_t	pid;
+}	t_prompt;
+
+typedef struct s_cmd
+{
+	t_list	*full_cmd;
+	char	*full_path;
+	int		infile;
+	int		outfile;
+}	t_mini;
+
+
 t_lexer		*init_lexer(t_shell shell);
 void		expander(t_shell *shell);
+void parse_tokens(t_lexer *lexer, t_prompt *prompt);
 void		minishell(void);
 
 #endif
