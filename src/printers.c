@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.c                                         :+:      :+:    :+:   */
+/*   printers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emaydogd <emaydogd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/03 23:23:20 by emaydogd         ###   ########.fr       */
+/*   Created: 2024/09/03 23:19:16 by emaydogd          #+#    #+#             */
+/*   Updated: 2024/09/03 23:19:32 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	expander(t_shell *shell)
+// todo: DELETE
+void	print_lexer(t_shell shell)
 {
-	int		i;
-	int		len;
-	char	*tmp;
-
-	i = 0;
-	while (shell->lexer[i].input)
+	const char *enum_dict[] = { "ARG", "PIPE", "TOKEN_REDIR_APPEND", "TOKEN_REDIR_HEREDOC", "TOKEN_REDIR_OUT", "TOKEN_REDIR_IN"};
+	if (shell.lexer == NULL)
+		printf("Lexer is empty\n");
+	while (shell.lexer != NULL)
 	{
-		if (shell->lexer[i].input[0] == '$')
-		{
-			len = ft_strlen(shell->lexer[i].input);
-			tmp = ft_substr(shell->lexer[i].input, 1, len - 1);
-			shell->lexer[i].input = getenv(tmp);
-		}
-		i++;
+		printf("%20s - type: %6s  pos: %zu\n", shell.lexer->input, enum_dict[shell.lexer->type], shell.lexer->pos);
+		shell.lexer = shell.lexer->next;
 	}
 }

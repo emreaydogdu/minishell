@@ -6,11 +6,47 @@
 /*   By: emaydogd <emaydogd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:36:16 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/01 18:29:08 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:11:20 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 #include <string.h>
+
+void print_cmd(t_mini *cmd)
+{
+	int i = 0;
+
+	printf("		infile: %d\n", cmd->infile);
+	printf("		outfile: %d\n", cmd->outfile);
+	printf("		full_path: %s\n", cmd->full_path ? cmd->full_path : "NULL (because command is a builtin)");
+	if (cmd->full_cmd)
+	{
+		while (cmd->full_cmd)
+		{
+			printf("		Arg[%d]: %s\n", i, (char *)cmd->full_cmd->content);
+			i++;
+			cmd->full_cmd = cmd->full_cmd->next;
+		}
+	}
+	else
+		printf("  No command arguments.\n");
+
+}
+
+void print_cmdtable(t_prompt *prompt)
+{
+	t_list *current_node = prompt->cmds;
+	int cmd_num = 1;
+
+	printf("Command Table:\n");
+	while (current_node)
+	{
+		t_mini *cmd = (t_mini *)current_node->content;
+		printf("\n	Command %d:\n", cmd_num++);
+		print_cmd(cmd);
+		current_node = current_node->next;
+	}
+}
 
 // Helper function to create a new command
 t_mini *create_cmd()
@@ -34,7 +70,7 @@ void add_cmd_to_prompt(t_prompt *prompt, t_mini *cmd)
 	ft_lstadd_back(&(prompt->cmds), new_node);
 }
 
-void parse_tokens(t_lexer *lexer, t_prompt *prompt)
+void parser(t_lexer *lexer, t_prompt *prompt)
 {
 	t_mini *cmd = create_cmd();
 	while (lexer)

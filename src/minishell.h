@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/01 17:21:05 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:24:45 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 # define MINISHELL_H
 # include <stdio.h>
 # include <stdlib.h>
-#include "../libft/libft.h"
+# include <stdio.h>
+# include <readline/readline.h>
+# include <string.h>
+# include "../libft/libft.h"
 
 # define BANNER "\
 ######################################################################################\n\
@@ -106,9 +109,10 @@ typedef struct s_cmd
 }	t_mini;
 
 
-t_lexer		*init_lexer(t_shell shell);
-void		expander(t_shell *shell);
-void parse_tokens(t_lexer *lexer, t_prompt *prompt);
-void		minishell(void);
+void	lexer(t_shell *shell);
+void	expander(t_shell *shell);
+void	parser(t_lexer *lexer, t_prompt *prompt);
 
+/* todo: DELETE */
+void	print_lexer(t_shell shell);
 #endif
