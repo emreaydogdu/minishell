@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:54:47 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/02 14:02:10 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:05:44 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,24 @@ static void	print_lexer(t_shell shell)
 int	push(t_lexer **lexer, char *input, t_token_type type, size_t pos)
 {
 	t_lexer* token = malloc(sizeof(t_lexer));
-
+	if (!token)
+		return (0);
 	// Assign data to the new TOKEN
 	token->input = input;
 	token->type = type;
 	token->pos = pos;
 	token->next = NULL;
-
 	// If the linked list is empty, then make the new node as head
-	if (*lexer == NULL) {
+	if (*lexer == NULL)
+	{
 		*lexer = token;
 		return (1);
 	}
-
 	// Else traverse till the last node
 	t_lexer* last = *lexer;
+
 	while (last->next != NULL)
 		last = last->next;
-
 	// Change the next of last node
 	last->next = token;
 	return (1);
@@ -54,7 +54,7 @@ void decode_lexer(char **str, t_shell *shell)
 {
 	size_t i = 0;
 	size_t pos = 0;
-
+	shell->lexer = NULL;
 	while (str[i] != NULL)
 	{
 		if (ft_strncmp(str[i], "|", 1) == 0)

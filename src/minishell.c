@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/07/02 14:24:41 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:05:27 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ void minishell()
 	struct s_shell	shell;
 
 	while (1) {
-		printf("\033[36;1m%s\033[0m", "➜ minishell$ ");
-		shell.cmdline = readline("");
+		shell.cmdline = readline("\033[36;1m ➜ minishell$ \033[0m");
 		
 		if (!shell.cmdline)
 			return ;
