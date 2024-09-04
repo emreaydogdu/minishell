@@ -3,29 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emaydogd <emaydogd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/03 23:23:20 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/04 12:29:34 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 void	expander(t_shell *shell)
 {
-	int		i;
-	int		len;
-	char	*tmp;
+	t_lexer * lexer;
 
-	i = 0;
-	while (shell->lexer[i].input)
+	lexer = shell->lexer;
+	
+	while (lexer)
 	{
-		if (shell->lexer[i].input[0] == '$')
+		if (lexer->input[0] == '$')
 		{
-			len = ft_strlen(shell->lexer[i].input);
-			tmp = ft_substr(shell->lexer[i].input, 1, len - 1);
-			shell->lexer[i].input = getenv(tmp);
+			lexer->input++;
+			// todo: check if arg is existing or not. reproduce bash behavior.
+			lexer->input = getenv(lexer->input);
+			printf("%s\n", lexer->input);
 		}
-		i++;
+		lexer = lexer->next;
 	}
 }
