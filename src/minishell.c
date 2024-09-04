@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/04 11:55:56 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:33:40 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,15 @@ static void	minishell(void)
 		add_history(shell.cmdline);
 		lexer(&shell);
 		expander(&shell);
-		print_lexer(shell);// optional only printing: delete after finish
+		//print_lexer(shell);// optional only printing: delete after finish
 
-/*
-	t_prompt prompt;
+
+	t_prompt	prompt;
 	prompt.cmds = NULL;
-	prompt.envp = NULL;
 	prompt.pid = getpid();
-	parser(shell.lexer, &prompt);
+	parser(&shell, &prompt);
 	print_cmdtable(&prompt);
-*/
+
 	}
 }
 

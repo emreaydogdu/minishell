@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/04 11:57:19 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:34:15 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ typedef struct s_shell
 typedef struct s_prompt
 {
 	t_list	*cmds;
-	char	**envp;
 	pid_t	pid;
 }	t_prompt;
 
@@ -107,12 +106,12 @@ typedef struct s_cmd
 	char	*full_path;
 	int		infile;
 	int		outfile;
-}	t_mini;
+}	t_cmd;
 
 
 void	lexer(t_shell *shell);
 void	expander(t_shell *shell);
-void	parser(t_lexer *lexer, t_prompt *prompt);
+void	parser(t_shell *shell, t_prompt *prompt);
 
 /* todo: DELETE */
 void	print_lexer(t_shell shell);

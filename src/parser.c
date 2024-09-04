@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emaydogd <emaydogd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:36:16 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/03 23:11:20 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:35:47 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 #include <string.h>
 
-void print_cmd(t_mini *cmd)
+void print_cmd(t_cmd *cmd)
 {
 	int i = 0;
 
@@ -41,7 +42,7 @@ void print_cmdtable(t_prompt *prompt)
 	printf("Command Table:\n");
 	while (current_node)
 	{
-		t_mini *cmd = (t_mini *)current_node->content;
+		t_cmd *cmd = (t_cmd *)current_node->content;
 		printf("\n	Command %d:\n", cmd_num++);
 		print_cmd(cmd);
 		current_node = current_node->next;
@@ -49,9 +50,9 @@ void print_cmdtable(t_prompt *prompt)
 }
 
 // Helper function to create a new command
-t_mini *create_cmd()
+t_cmd *create_cmd()
 {
-	t_mini *cmd = malloc(sizeof(t_mini));
+	t_cmd *cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return NULL;
 	cmd->full_cmd = NULL;
@@ -62,7 +63,7 @@ t_mini *create_cmd()
 }
 
 // Add the command to the prompt's command list
-void add_cmd_to_prompt(t_prompt *prompt, t_mini *cmd)
+void add_cmd_to_prompt(t_prompt *prompt, t_cmd *cmd)
 {
 	t_list *new_node = ft_lstnew(cmd);
 	if (!new_node)
@@ -70,12 +71,15 @@ void add_cmd_to_prompt(t_prompt *prompt, t_mini *cmd)
 	ft_lstadd_back(&(prompt->cmds), new_node);
 }
 
-void parser(t_lexer *lexer, t_prompt *prompt)
+void parser(t_shell *shell, t_prompt *prompt)
 {
-	t_mini *cmd = create_cmd();
+	t_lexer * lexer;
+	lexer = shell->lexer;
+
+	t_cmd *cmd = create_cmd();
 	while (lexer)
 	{
-		if (lexer->type == TOKEN_COMMAND || lexer->type == TOKEN_ARG)
+		if (lexer->type == TOKEN_ARG)
 			ft_lstadd_back(&cmd->full_cmd, ft_lstnew(lexer->input));
 		else if (lexer->type == TOKEN_REDIR_IN)
 			cmd->infile = 1;
