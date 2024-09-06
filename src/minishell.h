@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/04 13:34:15 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/06 12:16:07 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,13 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <string.h>
+# include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <string.h>
+# include <signal.h>
+# include <sys/wait.h>
+# include <sys/types.h>
 # include "../libft/libft.h"
 
 # define BANNER "\
@@ -115,4 +119,7 @@ void	parser(t_shell *shell, t_prompt *prompt);
 
 /* todo: DELETE */
 void	print_lexer(t_shell shell);
+void	print_cmdtable(t_prompt *prompt);
+int		is_builtin(char *cmd);
+
 #endif

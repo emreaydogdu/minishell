@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/04 13:33:40 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/06 11:00:01 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void	minishell(void)
 	prompt.pid = getpid();
 	parser(&shell, &prompt);
 	print_cmdtable(&prompt);
-
 	}
 }
 
