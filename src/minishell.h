@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/06 12:16:07 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/08 22:01:13 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ typedef struct s_shell
 	char			*cmdline;
 	struct s_lexer	*lexer;
 	struct s_parser	*parser;
-}				t_shell;
+	struct s_env	*env;
+}	t_shell;
 
 
 typedef struct s_prompt
@@ -112,10 +113,29 @@ typedef struct s_cmd
 	int		outfile;
 }	t_cmd;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
 
 void	lexer(t_shell *shell);
 void	expander(t_shell *shell);
 void	parser(t_shell *shell, t_prompt *prompt);
+
+void	init_env(t_shell *shell, char **env);
+int		env_push(t_env **env, char* key, char *value);
+
+/* BUILTINS */
+int		is_bin(char *cmd);
+void	exec_bin(char *cmd, char **args, char **env);
+void	exec_echo(char **args);
+void	exec_cd(char **args);
+void	exec_pwd(void);
+void	exec_env(t_shell *shell);
+void	exec_export(t_shell shell, char **args);
+void	exec_unset(t_shell shell, char **args);
 
 /* todo: DELETE */
 void	print_lexer(t_shell shell);

@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/06 11:00:01 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/08 22:11:46 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,27 @@ static void	minishell(void)
 		//print_lexer(shell);// optional only printing: delete after finish
 
 
-	t_prompt	prompt;
-	prompt.cmds = NULL;
-	prompt.pid = getpid();
-	parser(&shell, &prompt);
-	print_cmdtable(&prompt);
+		t_prompt	prompt;
+		prompt.cmds = NULL;
+		prompt.pid = getpid();
+		parser(&shell, &prompt);
+		print_cmdtable(&prompt);
 	}
 }
 
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **env)
 {
 	(void) ac;
 	(void) av;
-	minishell();
+	//minishell();
+
+
+	char *cmd = "export";
+	char *args[] = {"export", "~", NULL};
+	t_shell	shell;
+	shell.env = NULL;
+	init_env(&shell, env);
+	exec_env(&shell);
+
 	return (0);
 }
