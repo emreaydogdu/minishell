@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/08 21:32:10 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/09 11:54:27 by chbachir         ###   ########.fr       */
+/*   Created: 2024/09/04 15:18:51 by chbachir          #+#    #+#             */
+/*   Updated: 2024/09/09 12:58:26 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	exec_export(t_shell *shell, char **args)
+char *ft_strcpy(char *dest, const char *src)
 {
-	int i;
-	char **res;
+    char *copy;
 
-	
-
-	i = 1;
-	while(args[i])
-	{
-		res = ft_split(args[i], '=');
-		env_push(&shell->env,res[0], res[1]);
-		i++;
-	}
-	// use env_Push
+	copy = dest;
+    while (*src != '\0')
+    {
+        *dest = *src;
+        dest++;
+        src++;
+    }
+    *dest = '\0';
+    return copy;
 }

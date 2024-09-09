@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoirement.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emaydogd <emaydogd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:39:05 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/08 22:49:22 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:57:20 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,29 @@ int	env_push(t_env **env, char *key, char *value)
 	while (last->next != NULL)
 		last = last->next;
 	return (last->next = node, 1);
+}
+int	env_pop(t_env **env, char *key)
+{
+	t_env 	*prev;
+	t_env	*tmp;
+
+	tmp = *env;
+	prev = NULL;
+	while (tmp)
+	{
+		if (ft_strncmp(key, tmp->key, ft_strlen(tmp->key)) == 0)
+		{
+			if (!prev)
+				*env = tmp->next;
+			else
+				prev->next = tmp->next;
+			free(tmp);
+			return (1);
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	return (0);
 }
 
 void	init_env(t_shell *shell, char **env)

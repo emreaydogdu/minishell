@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/08 22:11:46 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:55:54 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,14 @@ int	main(int ac, char **av, char **env)
 
 
 	char *cmd = "export";
-	char *args[] = {"export", "~", NULL};
+	char *args[] = {"unset", "A=Hello", "B=GoodBye", "C=Emre", NULL};
+	char *args2[] = {"unset", "MAIL", "C", NULL};
 	t_shell	shell;
 	shell.env = NULL;
 	init_env(&shell, env);
+	exec_export(&shell, args);
+	exec_env(&shell);
+	exec_unset(&shell, args2);
 	exec_env(&shell);
 
 	return (0);

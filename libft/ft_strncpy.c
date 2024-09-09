@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/08 21:32:10 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/09 11:54:27 by chbachir         ###   ########.fr       */
+/*   Created: 2024/09/04 15:10:34 by chbachir          #+#    #+#             */
+/*   Updated: 2024/09/04 15:17:29 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	exec_export(t_shell *shell, char **args)
+char *ft_strncpy(char *dest, const char *src, size_t n)
 {
-	int i;
-	char **res;
+    size_t i = 0;
 
-	
-
-	i = 1;
-	while(args[i])
-	{
-		res = ft_split(args[i], '=');
-		env_push(&shell->env,res[0], res[1]);
-		i++;
-	}
-	// use env_Push
+    while (i < n && src[i] != '\0')
+    {
+        dest[i] = src[i];
+        i++;
+    }
+    while (i < n)
+    {
+        dest[i] = '\0';
+        i++;
+    }
+    return dest;
 }

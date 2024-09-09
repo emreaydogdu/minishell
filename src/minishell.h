@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/08 22:01:13 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:00:42 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,16 +126,17 @@ void	parser(t_shell *shell, t_prompt *prompt);
 
 void	init_env(t_shell *shell, char **env);
 int		env_push(t_env **env, char* key, char *value);
+int		env_pop(t_env **env, char *key);
 
 /* BUILTINS */
 int		is_bin(char *cmd);
-void	exec_bin(char *cmd, char **args, char **env);
+void	exec_bin(t_shell shell, char *cmd, char **args);
 void	exec_echo(char **args);
 void	exec_cd(char **args);
 void	exec_pwd(void);
 void	exec_env(t_shell *shell);
-void	exec_export(t_shell shell, char **args);
-void	exec_unset(t_shell shell, char **args);
+void	exec_export(t_shell *shell, char **args);
+void	exec_unset(t_shell *shell, char **args);
 
 /* todo: DELETE */
 void	print_lexer(t_shell shell);
