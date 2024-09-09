@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:39:05 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/09 12:57:20 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:25:29 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,23 @@ int	env_pop(t_env **env, char *key)
 void	init_env(t_shell *shell, char **env)
 {
 	int		i;
-	char	**res;
+	int		j;
+	char	*key;
+	char	*val;
 
 	i = 0;
 	while (env[i])
 	{
-		// TODO concatenate all string after first "="
-		res = ft_split(env[i], '=');
-		env_push(&shell->env, res[0], res[1]);
+		j = 0;
+		while (env[i][j])
+		{
+			if (env[i][j] == '=')
+				break ;
+			j++;
+		}
+		key = ft_substr(env[i], 0, j);
+		val = ft_substr(env[i], j + 1, ft_strlen(env[i]) - j + 1);
+		env_push(&shell->env, key, val);
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:10:13 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/09 11:55:46 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:00:34 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	exec_bin(t_shell shell, char *cmd, char **args)
 		exec_export(&shell, args);
 	else if (ft_strncmp(cmd, "unset", 5) == 0)
 		exec_unset(&shell, args);
-	/*else if (ft_strncmp(cmd, "env", 3) == 0)
-		exec_env(env);
-	else if (ft_strncmp(cmd, "exit", 4) == 0)
+	else if (ft_strncmp(cmd, "env", 3) == 0)
+		exec_env(&shell);
+	/*else if (ft_strncmp(cmd, "exit", 4) == 0)
 		exec_exit(); */
 }

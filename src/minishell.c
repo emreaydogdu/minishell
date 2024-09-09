@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/09 12:55:54 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:03:30 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,6 @@ int	main(int ac, char **av, char **env)
 	t_shell	shell;
 	shell.env = NULL;
 	init_env(&shell, env);
-	exec_export(&shell, args);
-	exec_env(&shell);
-	exec_unset(&shell, args2);
 	exec_env(&shell);
 
 	return (0);
