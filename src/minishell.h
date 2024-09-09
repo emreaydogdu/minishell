@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/09 12:00:42 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:25:52 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,5 +142,8 @@ void	exec_unset(t_shell *shell, char **args);
 void	print_lexer(t_shell shell);
 void	print_cmdtable(t_prompt *prompt);
 int		is_builtin(char *cmd);
+
+int		correct_single_quotes(char * input);
+void	write_single_quotes(char *input);
 
 #endif

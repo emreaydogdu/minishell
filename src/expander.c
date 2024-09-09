@@ -6,11 +6,65 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/09 15:52:33 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:36:00 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	write_single_quotes(char *input)
+{
+	int	first_quote;
+	int	last_quote;
+	int i = 0;
+	
+	while (input[i])
+	{
+		if(input[i] == '\'')
+		{
+			first_quote = i;
+			break ;
+		}
+		i++;
+	}
+	while (input[i])
+		i++;
+	while (i >= 0)
+	{
+		if(input[i] == '\'')
+		{
+			last_quote = i;
+			break ;
+		}
+		i--;
+	}
+	printf("%s\n", ft_substr(input, first_quote + 1, last_quote - first_quote - 1));
+}
+
+int	correct_single_quotes(char * input)
+{
+	int	nb_quotes;
+	int	i;
+
+	nb_quotes = 0;
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '\'')
+			nb_quotes++;
+		i++;
+	}
+	if ((nb_quotes % 2) == 0)
+	{
+		write_single_quotes(input);
+		return (1);
+	}
+	else
+	{
+		printf("!!! Error missing quotes etc...\n");
+		return (0);
+	}
+}
 
 void	expander(t_shell *shell)
 {
@@ -24,20 +78,23 @@ void	expander(t_shell *shell)
 	
 	dest = NULL;
 	lexer = shell->lexer;
+
+	if (correct_single_quotes(shell->cmdline) == 0)
+		return ;
+
 	while (lexer)
 	{
 		i = 0;
 		while (lexer->input[i])
 		{
 			if (lexer->input[i] == '$')
-			{	
+			{
 				start = ft_substr(lexer->input, 0,  i);
 				j = i;
 				while (lexer->input[j] != ' ' && lexer->input[j] != '"'  && lexer->input[j] != '\'' && lexer->input[j])
 					j++;
 				key = ft_substr(lexer->input, i + 1, j - i - 1);
 				end = ft_substr(lexer->input,j, ft_strlen(lexer->input) - j + 1);
-				
 				// todo: check if arg is existing or not. reproduce bash behavior.
 				key = getenv(key);
 				dest = malloc(sizeof(char) * (ft_strlen(start) + ft_strlen(key) + ft_strlen(end) + 1));
@@ -52,6 +109,8 @@ void	expander(t_shell *shell)
 			}
 			i++;
 		}
+		//correct_single_quotes(lexer->input);
+		//printf("1 == %s\n", lexer->input);
 		lexer = lexer->next;
 	}
 }

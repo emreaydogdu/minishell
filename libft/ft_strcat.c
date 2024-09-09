@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 15:14:23 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/09 15:15:22 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:26:08 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,17 @@
 
 char *ft_strcat(char *dest, const char *src)
 {
-    char *ptr = dest;
+    char *ptr;
 
-    // Move ptr to the end of dest string
+	ptr = dest;
     while (*ptr != '\0')
         ptr++;
-
-    // Copy characters from src to dest
     while (*src != '\0')
     {
         *ptr = *src;
         ptr++;
         src++;
     }
-
-    // Add null terminator to the concatenated string
     *ptr = '\0';
-    return dest;
+    return (dest);
 }
