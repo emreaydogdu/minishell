@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/09 13:03:30 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/09 15:42:22 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,17 @@ int	main(int ac, char **av, char **env)
 {
 	(void) ac;
 	(void) av;
-	//minishell();
+	minishell();
 
 
 	char *cmd = "export";
 	char *args[] = {"unset", "A=Hello", "B=GoodBye", "C=Emre", NULL};
 	char *args2[] = {"unset", "MAIL", "C", NULL};
-	t_shell	shell;
+
+	/* t_shell	shell;
 	shell.env = NULL;
 	init_env(&shell, env);
-	exec_env(&shell);
-
+	exec_env(&shell); */
+	//printf("'%s'\n", ft_substr("hello wooord", 0,  1));
 	return (0);
 }

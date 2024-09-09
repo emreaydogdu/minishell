@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emaydogd <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 19:27:29 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/08/30 20:59:59 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:07:30 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 #include <stdio.h>
 
@@ -25,6 +26,13 @@ static size_t	strcounter(char const *s, char c)
 		{
 			i++;
 			while (s[i] != '"' && s[i] != '\0')
+				i++;
+		}
+
+		if (s[i] == '\'')
+		{
+			i++;
+			while (s[i] != '\'' && s[i] != '\0')
 				i++;
 		}
 		if (s[i] == c)
@@ -52,14 +60,21 @@ static void	fillarr2(char **arr, size_t len_arr, char const *s, char c)
 		len_word = 0;
 		while (*s == c && *s != 0 && !in_quotes)
 			s++;
-		if (*s == '"')
+		if (*s == '"' && in_quotes == 0)
 		{
 			in_quotes = 1;
 			len_word++;
 		}
+		if (*s == '\'' && in_quotes == 0)
+		{
+			in_quotes = 2;
+			len_word++;
+		}
 		while ((s[len_word] != c || in_quotes) && s[len_word] != '\0')
 		{
-			if (s[len_word] == '"')
+			if (s[len_word] == '"' && in_quotes == 1)
+				in_quotes = 0;
+			if (s[len_word] == '\'' && in_quotes == 2)
 				in_quotes = 0;
 			len_word++;
 		}
