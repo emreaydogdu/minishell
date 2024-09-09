@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/09 18:36:00 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/09 19:12:19 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ int	correct_single_quotes(char * input)
 			nb_quotes++;
 		i++;
 	}
-	if ((nb_quotes % 2) == 0)
+	if (nb_quotes >= 1 && (nb_quotes % 2) == 0)
 	{
 		write_single_quotes(input);
 		return (1);
 	}
-	else
+	else if (nb_quotes >= 1 && (nb_quotes % 2) == 1)
 	{
 		printf("!!! Error missing quotes etc...\n");
 		return (0);
@@ -79,9 +79,7 @@ void	expander(t_shell *shell)
 	dest = NULL;
 	lexer = shell->lexer;
 
-	if (correct_single_quotes(shell->cmdline) == 0)
-		return ;
-
+	correct_single_quotes(shell->cmdline);
 	while (lexer)
 	{
 		i = 0;

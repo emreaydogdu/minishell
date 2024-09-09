@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/09 18:25:52 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:58:39 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void	exec_pwd(void);
 void	exec_env(t_shell *shell);
 void	exec_export(t_shell *shell, char **args);
 void	exec_unset(t_shell *shell, char **args);
+void	exec_exit();
 
 /* todo: DELETE */
 void	print_lexer(t_shell shell);
