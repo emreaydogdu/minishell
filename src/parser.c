@@ -6,95 +6,75 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:36:16 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/06 09:48:17 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:24:28 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void print_cmd(t_cmd *cmd)
+void print_cmdtable(t_shell shell)
 {
-	int i = 0;
-
-	printf("		infile: %d\n", cmd->infile);
-	printf("		outfile: %d\n", cmd->outfile);
-	printf("		full_path: %s\n", cmd->full_path ? cmd->full_path : "NULL (because command is a builtin)");
-	if (cmd->full_cmd)
-	{
-		while (cmd->full_cmd)
-		{
-			printf("		Arg[%d]: %s\n", i, (char *)cmd->full_cmd->content);
-			i++;
-			cmd->full_cmd = cmd->full_cmd->next;
-		}
-	}
-	else
-		printf("  No command arguments.\n");
-
-}
-
-void print_cmdtable(t_prompt *prompt)
-{
-	t_list *current_node = prompt->cmds;
+	t_parser *current_node = shell.parser;
 	int cmd_num = 1;
 
 	printf("Command Table:\n");
 	while (current_node)
 	{
-		t_cmd *cmd = (t_cmd *)current_node->content;
 		printf("\n	Command %d:\n", cmd_num++);
-		print_cmd(cmd);
+		t_parser *cmd = (t_parser *)current_node;
+		printf("		infile: %d\n", cmd->infile);
+		printf("		outfile: %d\n", cmd->outfile);
+		printf("		full_path: %s\n", cmd->full_path ? cmd->full_path : "NULL (because command is a builtin)");
+		int i = 0;
+		if (cmd->full_cmd)
+		{
+			while (cmd->full_cmd)
+			{
+				printf("		Arg[%d]: %s\n", i, (char *)cmd->full_cmd->content);
+				i++;
+				cmd->full_cmd = cmd->full_cmd->next;
+			}
+		}
+		else
+			printf("  No command arguments.\n");
 		current_node = current_node->next;
 	}
 }
 
-// Helper function to create a new command
-t_cmd *create_cmd()
+static t_parser *new_cmd_node()
 {
-	t_cmd *cmd = malloc(sizeof(t_cmd));
+	t_parser *cmd = malloc(sizeof(t_parser));
 	if (!cmd)
 		return NULL;
 	cmd->full_cmd = NULL;
 	cmd->full_path = NULL;
-	cmd->infile = STDIN_FILENO;  // Default to standard input
+	cmd->infile = STDIN_FILENO;   // Default to standard input
 	cmd->outfile = STDOUT_FILENO; // Default to standard output
+	cmd->next = NULL;
 	return cmd;
 }
 
-// Add the command to the prompt's command list
-void add_cmd_to_prompt(t_prompt *prompt, t_cmd *cmd)
+void parser(t_shell *shell)
 {
-	t_list *new_node = ft_lstnew(cmd);
-	if (!new_node)
-		return; // Handle memory allocation failure
-	ft_lstadd_back(&(prompt->cmds), new_node);
-}
+	t_parser *parser;
+	t_lexer *lexer;
 
-void parser(t_shell *shell, t_prompt *prompt)
-{
-	t_lexer * lexer;
+	shell->parser = new_cmd_node();
+	parser = shell->parser;
 	lexer = shell->lexer;
-
-	t_cmd *cmd = create_cmd();
 	while (lexer)
 	{
 		if (lexer->type == TOKEN_ARG)
-			ft_lstadd_back(&cmd->full_cmd, ft_lstnew(lexer->input));
+			ft_lstadd_back(&parser->full_cmd, ft_lstnew(lexer->input));
 		else if (lexer->type == TOKEN_REDIR_IN)
-			cmd->infile = 1;
+			parser->infile = 1;
 		else if (lexer->type == TOKEN_REDIR_OUT)
-			cmd->outfile = 0;
-
+			parser->outfile = 0;
 		lexer = lexer->next;
-		if (lexer && lexer->type == TOKEN_PIPE) // End of a command, start a new one
+		if (lexer && lexer->type == TOKEN_PIPE)
 		{
-			add_cmd_to_prompt(prompt, cmd);
-			cmd = create_cmd();
+			parser->next = new_cmd_node();
+			parser = parser->next;
 		}
-	}
-
-	if (cmd->full_cmd != NULL) // Add the last command if it exists
-	{
-		add_cmd_to_prompt(prompt, cmd);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/09 19:06:27 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:52:22 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,11 @@ static void	minishell(void)
 		add_history(shell.cmdline);
 		lexer(&shell);
 		expander(&shell);
-		//print_lexer(shell);// optional only printing: delete after finish
+		print_lexer(shell);// optional only printing: delete after finish
+		printf("------------------------------------------------\n");
 
-
-		t_prompt	prompt;
-		prompt.cmds = NULL;
-		prompt.pid = getpid();
-		parser(&shell, &prompt);
-		print_cmdtable(&prompt);
+		parser(&shell);
+		print_cmdtable(shell);
 	}
 }
 
@@ -42,16 +39,15 @@ int	main(int ac, char **av, char **env)
 	(void) av;
 	minishell();
 
-
+/*
 	char *cmd = "export";
 	char *args[] = {"unset", "A=Hello", "B=GoodBye", "C=Emre", NULL};
 	char *args2[] = {"unset", "MAIL", "C", NULL};
-	
 
 	t_shell	shell;
 	shell.env = NULL;
 	init_env(&shell, env);
 	exec_env(&shell);
-	//printf("'%s'\n", ft_substr("hello wooord", 0,  1));
+*/
 	return (0);
 }

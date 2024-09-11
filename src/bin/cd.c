@@ -6,7 +6,7 @@
 /*   By: emaydogd <emaydogd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:27:23 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/08 21:28:21 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:28:00 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	exec_cd(char **args)
 	char	*home;
 
 	home = getenv("HOME");
-	if (args[1] == NULL || args[1] == "~")
+	if (args[1] == NULL || ft_strncmp(args[1], "~", 1) == 0)
 	{
 		if (chdir(home) == 0)
 			printf("%s\n", ".");

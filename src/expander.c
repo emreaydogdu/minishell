@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/09 19:12:19 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:28:48 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	correct_single_quotes(char * input)
 		printf("!!! Error missing quotes etc...\n");
 		return (0);
 	}
+	return (0);
 }
 
 void	expander(t_shell *shell)

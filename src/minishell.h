@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/09 18:58:39 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:12:47 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,28 +51,7 @@ typedef enum	s_token_type
 	TOKEN_REDIR_OUT,
 	TOKEN_REDIR_IN,
 	TOKEN_COMMAND
-	/* TOKEN_WORD,
-	TOKEN_REDIR_IN,
-	TOKEN_REDIR_OUT,
-	TOKEN_REDIR_APPEND,
-	TOKEN_REDIR_HEREDOC,
-	TOKEN_AND_IF,
-	TOKEN_OR_IF,
-	TOKEN_SEMICOLON,
-	TOKEN_NEWLINE,
-	TOKEN_EOF */
-}			t_token_type;
-
-typedef enum s_std_cmd
-{
-	CMD_CD = 0,
-	CMD_ECHO,
-	CMD_EXIT,
-	CMD_PWD,
-	CMD_EXPORT,
-	CMD_UNSET,
-	CMD_ENV
-}			t_std_cmd;
+}	t_token_type;
 
 typedef struct s_lexer
 {
@@ -80,15 +59,23 @@ typedef struct s_lexer
 	size_t			pos;
 	int				type;
 	struct s_lexer	*next;
-}				t_lexer;
+}	t_lexer;
 
 typedef struct s_parser
 {
-	char					*cmd;
-	int						std_cmd;
-	struct s_parser_node	*left;
-	struct s_parser_node	*right;
-}				t_parser;
+	t_list			*full_cmd;
+	char			*full_path;
+	int				infile;
+	int				outfile;
+	struct s_parser	*next;
+}	t_parser;
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
 
 typedef struct s_shell
 {
@@ -98,31 +85,9 @@ typedef struct s_shell
 	struct s_env	*env;
 }	t_shell;
 
-
-typedef struct s_prompt
-{
-	t_list	*cmds;
-	pid_t	pid;
-}	t_prompt;
-
-typedef struct s_cmd
-{
-	t_list	*full_cmd;
-	char	*full_path;
-	int		infile;
-	int		outfile;
-}	t_cmd;
-
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}	t_env;
-
 void	lexer(t_shell *shell);
 void	expander(t_shell *shell);
-void	parser(t_shell *shell, t_prompt *prompt);
+void	parser(t_shell *shell);
 
 void	init_env(t_shell *shell, char **env);
 int		env_push(t_env **env, char* key, char *value);
@@ -141,8 +106,7 @@ void	exec_exit();
 
 /* todo: DELETE */
 void	print_lexer(t_shell shell);
-void	print_cmdtable(t_prompt *prompt);
-int		is_builtin(char *cmd);
+void	print_cmdtable(t_shell shell);
 
 int		correct_single_quotes(char * input);
 void	write_single_quotes(char *input);
