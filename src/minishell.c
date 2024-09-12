@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/12 11:59:16 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:21:52 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	cleanup(t_shell *shell)
 {
-	free_lexer(&shell);
-	free_parser(&shell);
-	free_env(&shell);
+	free_lexer(shell);
+	free_parser(shell);
+	free_env(shell);
 	free(shell->cmdline);
 }
 
