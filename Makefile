@@ -4,7 +4,7 @@ RL		=	-lreadline
 CFLAGS	=	#-Wall -Wextra -Werror
 RM		=	rm -f -r
 
-SRCC	=	minishell.c lexer.c expander.c parser.c printers.c executer.c envoirement.c bin/echo.c bin/pwd.c bin/cd.c bin/env.c bin/export.c bin/unset.c bin/exit.c
+SRCC	=	minishell.c lexer.c expander.c parser.c printers.c executer.c environment.c bin/echo.c bin/pwd.c bin/cd.c bin/env.c bin/export.c bin/unset.c bin/exit.c
 OBJD	=	obj
 OBJDBIN	=	obj/bin
 SRCD	=	src

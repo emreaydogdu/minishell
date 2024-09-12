@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:51:01 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/09 19:02:08 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:11:45 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 
 void	exec_exit()
 {
-	printf("??");
+	printf("exit\n");
+	exit(0);
 }

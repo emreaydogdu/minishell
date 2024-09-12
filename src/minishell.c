@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/10 15:52:22 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:15:10 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	minishell(void)
 		print_lexer(shell);// optional only printing: delete after finish
 		printf("------------------------------------------------\n");
 
+		if (ft_strncmp(shell.cmdline, "exit", 4) == 0 && (shell.cmdline[4] == '\0' || shell.cmdline[4] == ' '))
+			exec_exit();
 		parser(&shell);
 		print_cmdtable(shell);
 	}
