@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/11 13:12:47 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:01:37 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	exec_pwd(void);
 void	exec_env(t_shell *shell);
 void	exec_export(t_shell *shell, char **args);
 void	exec_unset(t_shell *shell, char **args);
-void	exec_exit();
+void	exec_exit(t_shell *shell);
 
 /* todo: DELETE */
 void	print_lexer(t_shell shell);
@@ -110,5 +110,11 @@ void	print_cmdtable(t_shell shell);
 
 int		correct_single_quotes(char * input);
 void	write_single_quotes(char *input);
+
+// Cleaning
+void	cleanup(t_shell *shell);
+void	free_lexer(t_shell *shell);
+void	free_parser(t_shell *shell);
+void	free_env(t_shell *shell);
 
 #endif
