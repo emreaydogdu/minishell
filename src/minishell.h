@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/12 12:01:37 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/12 14:47:31 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,8 @@ void	write_single_quotes(char *input);
 
 // Cleaning
 void	cleanup(t_shell *shell);
-void	free_lexer(t_shell *shell);
-void	free_parser(t_shell *shell);
-void	free_env(t_shell *shell);
+void	free_lexer(t_lexer *lexer);
+void	free_parser(t_parser *parser);
+void	free_env(t_env *env);
 
 #endif

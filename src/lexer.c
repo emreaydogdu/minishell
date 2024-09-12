@@ -6,9 +6,10 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:54:47 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/03 23:20:30 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/12 15:21:11 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	push(t_lexer **lexer, char *input, t_token_type type, size_t pos)
@@ -19,7 +20,12 @@ static int	push(t_lexer **lexer, char *input, t_token_type type, size_t pos)
 	token = malloc(sizeof(t_lexer));
 	if (!token)
 		return (0);
-	token->input = input;
+	token->input = ft_strdup(input); // // added by chakib, was = input;
+	if (!token->input) // added by chakib
+	{
+		free(token); // added by chakib
+		return (0); // added by chakib
+	}
 	token->type = type;
 	token->pos = pos;
 	token->next = NULL;
@@ -33,6 +39,19 @@ static int	push(t_lexer **lexer, char *input, t_token_type type, size_t pos)
 		last = last->next;
 	last->next = token;
 	return (1);
+}
+
+void	free_split_res(char **split_res)
+{
+	int i;
+
+	i = 0;
+	while (split_res[i])
+	{
+		free(split_res[i]);
+		i++;
+	}
+	free(split_res);
 }
 
 void	lexer(t_shell *shell)
@@ -61,4 +80,5 @@ void	lexer(t_shell *shell)
 			push(&shell->lexer, str[i], TOKEN_ARG, pos);
 		pos++;
 	}
+	free_split_res(str); 
 }

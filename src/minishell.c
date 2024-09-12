@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/12 12:21:52 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/12 15:30:07 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,55 +14,72 @@
 
 void	cleanup(t_shell *shell)
 {
-	free_lexer(shell);
-	free_parser(shell);
-	free_env(shell);
-	free(shell->cmdline);
-}
-
-void	free_lexer(t_shell *shell)
-{
-	t_lexer	*current_lexer;
-	t_lexer *next;
-	
-	current_lexer = shell->lexer;
-	while(current_lexer)
+	if (shell->lexer)
 	{
-		next = current_lexer->next;
-		free(current_lexer->input);
-		free(current_lexer);
-		current_lexer = next;
+		free_lexer(shell->lexer);
+		shell->lexer = NULL;
+	}
+	if (shell->parser)
+	{
+		free_parser(shell->parser);
+		shell->parser = NULL;
+	}
+	if (shell->env)
+	{
+		free_env(shell->env);
+		shell->env = NULL;
+	}
+	if (shell->cmdline)
+	{
+		free(shell->cmdline);
+		shell->cmdline = NULL;
 	}
 }
 
-void	free_parser(t_shell *shell)
+void	free_lexer(t_lexer *lexer)
 {
-	t_parser *current_parser;
-	t_parser *next;
-	current_parser = shell->parser;
-
-	while (current_parser)
+	t_lexer *tmp;
+	while (lexer)
 	{
-		next = current_parser->next;
-		ft_lstclear(&current_parser->full_cmd, free);
-		free(current_parser->full_path);
-		free(current_parser);
-		current_parser = next;
+		tmp = lexer->next;
+		if (lexer->input)
+		{
+			free(lexer->input);
+			lexer->input = NULL;
+		}
+		free(lexer);
+		lexer = tmp;
 	}
 }
-void	free_env(t_shell *shell)
-{
-	t_env *current_env;
-	t_env *next;
-	current_env = shell->env;
 
-	while (current_env)
+void	free_parser(t_parser *parser)
+{
+	t_parser *tmp;
+	while (parser)
 	{
-		next = current_env->next;
-		free(current_env->key);
-		free(current_env->value);
-		free(current_env);
-		current_env = next;
+		tmp = parser->next;
+		if(parser->full_cmd)
+		{
+			free(parser->full_cmd);
+			parser->full_cmd = NULL;
+		}
+		free(parser);
+		parser = tmp;
+	}
+}
+void	free_env(t_env *env)
+{
+	t_env *tmp;
+	while(env)
+	{
+		tmp = env->next;
+		if (env->key)
+		{
+			free(env->key);
+			env->key = NULL;
+		}
+		free(env);
+		env = tmp;
 	}
 }
 
@@ -70,6 +87,10 @@ static void	minishell(void)
 {
 	struct s_shell	shell;
 
+	shell.cmdline = NULL;
+	shell.env = NULL;
+	shell.lexer = NULL;
+	shell.parser = NULL;
 	while (1)
 	{
 		shell.cmdline = readline("\033[36;1m ➜ minishell$ \033[0m");
@@ -79,13 +100,13 @@ static void	minishell(void)
 		add_history(shell.cmdline);
 		lexer(&shell);
 		expander(&shell);
-		print_lexer(shell);// optional only printing: delete after finish
+		//print_lexer(shell);// optional only printing: delete after finish
 		printf("------------------------------------------------\n");
 
-		if (ft_strncmp(shell.cmdline, "exit", 4) == 0 && (shell.cmdline[4] == '\0' || shell.cmdline[4] == ' '))
-			exec_exit(&shell);
 		parser(&shell);
 		print_cmdtable(shell);
+		cleanup(&shell);
+		free(shell.cmdline);
 	}
 }
 
