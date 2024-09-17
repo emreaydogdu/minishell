@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/17 13:53:54 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:10:30 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,12 @@ static void	minishell(void)
  		//add_history(shell.cmdline);
 		lexer(&shell);
 		expander(&shell);
-		//print_lexer(shell);// optional only printing: delete after finish
-		//printf("------------------------------------------------\n");
+		print_lexer(shell);// optional only printing: delete after finish
+		printf("------------------------------------------------\n");
 
 		parser(&shell);
-		//print_cmdtable(shell);
+		print_cmdtable(shell);
+		printf("------------------------------------------------\n");
 		while (shell.parser)
 		{
 			while (shell.parser->full_cmd)

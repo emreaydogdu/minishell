@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:54:47 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/17 10:04:36 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:11:55 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void	lexer(t_shell *shell)
 		if (ft_strncmp(str[i], "|", 1) == 0)
 			push(&shell->lexer, "|", TOKEN_PIPE, pos);
 		else if (ft_strncmp(str[i], "<<", 2) == 0)
-			push(&shell->lexer, "<<", TOKEN_REDIR_APPEND, pos);
+			push(&shell->lexer, "<<", TOKEN_REDIR_HEREDOC, pos);
 		else if (ft_strncmp(str[i], ">>", 2) == 0)
-			push(&shell->lexer, ">>", TOKEN_REDIR_HEREDOC, pos);
+			push(&shell->lexer, ">>", TOKEN_REDIR_APPEND, pos);
 		else if (ft_strncmp(str[i], "<", 1) == 0)
-			push(&shell->lexer, "<", TOKEN_REDIR_OUT, pos);
+			push(&shell->lexer, "<", TOKEN_REDIR_IN, pos);
 		else if (ft_strncmp(str[i], ">", 1) == 0)
-			push(&shell->lexer, ">", TOKEN_REDIR_IN, pos);
+			push(&shell->lexer, ">", TOKEN_REDIR_OUT, pos);
 		else
 			push(&shell->lexer, str[i], TOKEN_ARG, pos);
 		pos++;

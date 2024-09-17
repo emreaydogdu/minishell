@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:36:16 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/17 12:57:56 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:12:59 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ void parser(t_shell *shell)
 		else if (lexer->type == TOKEN_REDIR_IN)
 			parser->infile = 1;
 		else if (lexer->type == TOKEN_REDIR_OUT)
+		{
+			
 			parser->outfile = 0;
+		}
 		//free(node_input); 
 		lexer = lexer->next;
 		if (lexer && lexer->type == TOKEN_PIPE)
