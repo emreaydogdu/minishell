@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/17 11:41:23 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/17 13:59:40 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_env
 typedef struct s_shell
 {
 	char			*cmdline;
+	char			*tmp_output;
 	struct s_lexer	*lexer;
 	struct s_parser	*parser;
 	struct s_env	*env;
@@ -95,8 +96,8 @@ int		env_pop(t_env **env, char *key);
 
 /* BUILTINS */
 int		is_bin(char *cmd);
-void	exec_bin(t_shell shell, char *cmd, char **args);
-void	exec_echo(char **args);
+void	exec_bin(t_shell *shell, char *cmd, char **args);
+void	exec_echo(t_parser *parser);
 void	exec_cd(char **args);
 void	exec_pwd(void);
 void	exec_env(t_shell *shell);
@@ -117,4 +118,7 @@ void	free_lexer(t_lexer *lexer);
 void	free_parser(t_parser *parser);
 void	free_env(t_env *env);
 
+int		*piping();
+char 	*get_external_cmd_path(char *cmd);
+void	exec_cmd(char *path, char *cmd);
 #endif

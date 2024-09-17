@@ -6,7 +6,7 @@ RM		=	rm -f -r
 
 SRCC	=	minishell.c lexer.c expander.c parser.c printers.c executer.c \
 			environment.c bin/echo.c bin/pwd.c bin/cd.c bin/env.c bin/export.c \
-			bin/unset.c bin/exit.c pathfinder.c
+			bin/unset.c bin/exit.c pathfinder.c pipe.c
 OBJD	=	obj
 OBJDBIN	=	obj/bin
 SRCD	=	src

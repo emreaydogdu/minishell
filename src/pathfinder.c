@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 14:45:30 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/17 11:25:39 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/17 13:58:16 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,9 @@ void	exec_cmd(char *path, char *cmd)
 	{
 		char *args[] = {cmd, NULL};
     	char *envp[] = {NULL};
-		//if (execve(path, args, envp) == -1)
-		if (execve("cd", args, envp) == -1)
+		if (execve(path, args, envp) == -1)
 		{
-			perror("cd");
+			perror(cmd);
 			exit(EXIT_FAILURE);
 		}
 	}

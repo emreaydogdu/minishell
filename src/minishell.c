@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/17 11:36:20 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/17 13:53:54 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,22 +102,33 @@ static void	minishell(void)
 	shell.parser = NULL;
 	while (1)
 	{
-/* 		shell.cmdline = readline("\033[36;1m ➜ minishell$ \033[0m");
+ 		shell.cmdline = readline("\033[36;1m ➜ minishell$ \033[0m");
 		if (!shell.cmdline)
 			return ; 
 		shell.cmdline[ft_strlen(shell.cmdline)] = '\0';
-*/
-		shell.cmdline = "echo 'hello' 'Emre' | wc";
+
+		//shell.cmdline = "echo 'hello' 'Emre'";
  		//add_history(shell.cmdline);
 		lexer(&shell);
 		expander(&shell);
-		print_lexer(shell);// optional only printing: delete after finish
-		printf("------------------------------------------------\n");
+		//print_lexer(shell);// optional only printing: delete after finish
+		//printf("------------------------------------------------\n");
 
 		parser(&shell);
-		print_cmdtable(shell);
+		//print_cmdtable(shell);
+		while (shell.parser)
+		{
+			while (shell.parser->full_cmd)
+			{
+				char *content = (char *)shell.parser->full_cmd->content;
+				shell.parser->full_cmd = shell.parser->full_cmd->next;
+				exec_bin(&shell, content, NULL);
+				break ;
+			}
+			shell.parser = shell.parser->next;
+		}
 		cleanup(&shell);
-		exit(1);
+		printf("\n");
 		//free(shell.cmdline);
 	}
 }
