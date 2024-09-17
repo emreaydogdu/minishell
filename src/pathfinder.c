@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   pathfinder.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 14:45:30 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/06 12:14:58 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:25:39 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,24 +82,25 @@ void	exec_cmd(char *path, char *cmd)
 	
 }
 
-int main() {
+/* int main() 
+{
 	char* arg[] = {"cd", "", NULL};
 	char* env[] = {""};
-/* 	if (execve("export", arg, env) == -1)
+	if (execve("export", arg, env) == -1)
 	{
 		perror("execve");
 		exit(EXIT_FAILURE);
-	} */
-	//char *cmd = "alias";
-    //char* path = get_external_cmd_path(cmd);
+	}
+	char *cmd = "wc";
+    char* path = get_external_cmd_path(cmd);
 	
-    //if (path)
-	//{
-    //    printf("Path of %s: %s\n", cmd, path);
-	exec_cmd("cd", "cd");
-	is_builtin("cd");
-	//}
-   /*  else
-        printf("%s not found in PATH\n", cmd); */
+    if (path)
+	{
+    	printf("Path of %s: %s\n", cmd, path);
+	//exec_cmd("cd", "cd");
+	//is_builtin("cd");
+	}
+    else
+        printf("%s not found in PATH\n", cmd);
     return 0;
-}
+} */

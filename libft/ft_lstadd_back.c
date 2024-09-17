@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emaydogd <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 13:10:12 by emaydogd          #+#    #+#             */
-/*   Updated: 2023/05/09 14:42:36 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/17 10:40:17 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 void	ft_lstadd_back(t_list **lst, t_list *new)

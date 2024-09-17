@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:54:47 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/12 15:21:11 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/17 10:04:36 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,5 @@ void	lexer(t_shell *shell)
 			push(&shell->lexer, str[i], TOKEN_ARG, pos);
 		pos++;
 	}
-	free_split_res(str); 
+	free_split_res(str);
 }

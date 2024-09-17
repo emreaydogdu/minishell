@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/10 15:28:48 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/17 10:14:11 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,11 @@ void	expander(t_shell *shell)
 				dest = ft_strcat(dest, start);
 				dest = ft_strcat(dest, key);
 				dest = ft_strcat(dest, end);
-				lexer->input = dest;
+				lexer->input = ft_strdup(dest);
+				free(start);
+				free(key);
+				free(end);
+				free(dest);
 				i = j;
 			}
 			i++;

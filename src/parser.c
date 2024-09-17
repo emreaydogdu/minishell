@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:36:16 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/11 13:24:28 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:38:27 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,23 +58,28 @@ void parser(t_shell *shell)
 {
 	t_parser *parser;
 	t_lexer *lexer;
+	t_list	*node_input;
 
 	shell->parser = new_cmd_node();
 	parser = shell->parser;
 	lexer = shell->lexer;
 	while (lexer)
 	{
+		node_input = ft_lstnew(lexer->input);
 		if (lexer->type == TOKEN_ARG)
-			ft_lstadd_back(&parser->full_cmd, ft_lstnew(lexer->input));
+			ft_lstadd_back(&parser->full_cmd, node_input);
 		else if (lexer->type == TOKEN_REDIR_IN)
 			parser->infile = 1;
 		else if (lexer->type == TOKEN_REDIR_OUT)
 			parser->outfile = 0;
+		//free(node_input); 
 		lexer = lexer->next;
 		if (lexer && lexer->type == TOKEN_PIPE)
 		{
 			parser->next = new_cmd_node();
+			parser->infile = 3;
 			parser = parser->next;
 		}
 	}
+	
 }
