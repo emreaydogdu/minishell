@@ -4,10 +4,8 @@
 
 int main ()
 {
-	int fd = open("test", O_CREAT);
-	int fd2= open("test", O_WRONLY);
-	write(fd2, "hello", 5);
-	close(fd2);
-	printf("fd %d\n", fd);
-	printf("fd2 %d\n", fd2);
+	int fd1 = open("fd1", O_CREAT | O_RDWR, 0644);
+	write(fd1, "Non", 3);
+	printf("fd1 = %d\n", fd1);
+	close(fd1);
 }
