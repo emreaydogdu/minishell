@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:36:16 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/17 14:12:59 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:06:58 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,42 @@ void parser(t_shell *shell)
 		if (lexer->type == TOKEN_ARG)
 			ft_lstadd_back(&parser->full_cmd, node_input);
 		else if (lexer->type == TOKEN_REDIR_IN)
-			parser->infile = 1;
+		{
+			lexer = lexer->next;
+			parser->infile = open(lexer->input, O_RDONLY, 777);
+			if (parser->infile == -1)
+			{
+				printf("open failed");
+				return ;
+			}
+			
+		}
 		else if (lexer->type == TOKEN_REDIR_OUT)
 		{
+			lexer = lexer->next;
 			
-			parser->outfile = 0;
+			parser->outfile = open(lexer->input, O_CREAT | O_RDWR | O_TRUNC, 777);
+			if (parser->outfile == - 1)
+			{
+				printf("open failed");
+				return ;
+			}
+		}
+		else if (lexer->type == TOKEN_REDIR_APPEND)
+		{
+			lexer = lexer->next;
+			
+			parser->outfile = open(lexer->input, O_CREAT | O_RDWR | O_APPEND, 777);
+			if (parser->outfile == - 1)
+			{
+				printf("open failed");
+				return ;
+			}
+		}
+		else if (lexer->type == TOKEN_REDIR_HEREDOC)
+		{
+			lexer = lexer->next;
+			
 		}
 		//free(node_input); 
 		lexer = lexer->next;

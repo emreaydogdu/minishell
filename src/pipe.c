@@ -5,11 +5,12 @@
 #include <fcntl.h>
 #include "minishell.h"
 
-int	*piping()
+int	* piping()
 {
 	int *pipefd;
+
 	pipefd = malloc(sizeof(int) * 2);
-	if (pipe(pipefd))
+	if (pipe(pipefd) == -1)
 	{
 		printf("Pipe failure\n");
 		exit(1);

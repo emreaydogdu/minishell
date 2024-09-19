@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/17 13:59:40 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:18:05 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <fcntl.h>
 # include "../libft/libft.h"
 
 # define BANNER "\

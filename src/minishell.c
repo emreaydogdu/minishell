@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/19 12:28:59 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:49:46 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,28 @@ static void	minishell(void)
 		shell.cmdline[ft_strlen(shell.cmdline)] = '\0';
 
 		//shell.cmdline = "echo 'hello' 'Emre'";
- 		//add_history(shell.cmdline);
+ 		add_history(shell.cmdline);
 		lexer(&shell);
 		expander(&shell);
 		print_lexer(shell);// optional only printing: delete after finish
 		printf("------------------------------------------------\n");
 
 		parser(&shell);
-		print_cmdtable(shell);
+		//print_cmdtable(shell);
 		printf("------------------------------------------------\n");
-		while (shell.parser)
+
+		t_parser *current_node = shell.parser;
+		while (current_node)
 		{
-			while (shell.parser->full_cmd)
+			t_parser *cmd = (t_parser *)current_node;
+			while (cmd->full_cmd)
 			{
-				char *content = (char *)shell.parser->full_cmd->content;
-				shell.parser->full_cmd = shell.parser->full_cmd->next;
+				char *content = (char *)cmd->full_cmd->content;
+				cmd->full_cmd = cmd->full_cmd->next;
 				exec_bin(&shell, content, NULL);
 				break ;
 			}
-			shell.parser = shell.parser->next;
+			current_node = current_node->next;
 		}
 		cleanup(&shell);
 		printf("\n");

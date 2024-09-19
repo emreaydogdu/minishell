@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:10:13 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/18 22:44:58 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:03:46 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ void	exec_path(t_parser *parser, char * cmd)
 	cmd_path = get_external_cmd_path(cmd);
 	if (parser->infile != STDIN_FILENO)
 	{
-		read(parser->infile, buffer, 100);
-		printf("Buffer in exectur.c %s\n", buffer);
+		dup2(parser->infile, STDIN_FILENO);
 	}
 	exec_cmd(cmd_path, cmd);
 }

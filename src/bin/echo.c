@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:05:13 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/17 13:37:56 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:05:38 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,5 @@ void	exec_echo(t_parser *parser) // t_shell *shell, int out
 		}
 		parser->full_cmd = parser->full_cmd->next;
 	}
+	close(parser->outfile);
 }
