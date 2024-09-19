@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:54:47 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/17 14:11:55 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/19 10:16:41 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ static int	push(t_lexer **lexer, char *input, t_token_type type, size_t pos)
 	token = malloc(sizeof(t_lexer));
 	if (!token)
 		return (0);
-	token->input = ft_strdup(input); // // added by chakib, was = input;
-	if (!token->input) // added by chakib
+	token->input = ft_strdup(input);
+	if (!token->input) // Maybe we can check if input == NULL before malloc. if NULL ----> return to save lines ? \
+	or maybe input already cannot be NULL (if it's already checked before being pushed in lexer func) then dont even check.
 	{
 		free(token); // added by chakib
 		return (0); // added by chakib

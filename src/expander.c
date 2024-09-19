@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/17 10:14:11 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:52:27 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	expander(t_shell *shell)
 	int			i;
 	int			j;
 	char		*key;
+	char		*key_env;
 	char		*start;
 	char		*end;
 	char		*dest;
@@ -80,7 +81,7 @@ void	expander(t_shell *shell)
 	dest = NULL;
 	lexer = shell->lexer;
 
-	correct_single_quotes(shell->cmdline);
+	correct_single_quotes(shell->cmdline); // Chakib : not supposed to write here, should be done in executer
 	while (lexer)
 	{
 		i = 0;
@@ -94,14 +95,13 @@ void	expander(t_shell *shell)
 					j++;
 				key = ft_substr(lexer->input, i + 1, j - i - 1);
 				end = ft_substr(lexer->input,j, ft_strlen(lexer->input) - j + 1);
-				// todo: check if arg is existing or not. reproduce bash behavior.
-				key = getenv(key);
-				dest = malloc(sizeof(char) * (ft_strlen(start) + ft_strlen(key) + ft_strlen(end) + 1));
+				// // todo: check if arg is existing or not. reproduce bash behavior.
+				key_env = getenv(key);
+				dest = ft_calloc((ft_strlen(start) + ft_strlen(key_env) + ft_strlen(end) + 1), sizeof(char));
 				if (!dest)
-					return ;
-				dest[0] = '\0';
+				 	return ;
 				dest = ft_strcat(dest, start);
-				dest = ft_strcat(dest, key);
+				dest = ft_strcat(dest, key_env);
 				dest = ft_strcat(dest, end);
 				lexer->input = ft_strdup(dest);
 				free(start);
