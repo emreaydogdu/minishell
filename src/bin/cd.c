@@ -3,25 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emaydogd <emaydogd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:27:23 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/10 15:28:00 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:41:03 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	exec_cd(char **args)
+void	exec_cd(t_shell *shell)
 {
+	t_parser *parser;
+	
+	parser = shell->parser;
+	
 	char	*home;
 
 	home = getenv("HOME");
-	if (args[1] == NULL || ft_strncmp(args[1], "~", 1) == 0)
+	if ((char *)shell->parser->args == NULL || ft_strncmp((char *)shell->parser->args, "~", 1) == 0)
 	{
 		if (chdir(home) == 0)
 			printf("%s\n", ".");
 	}
-	else if (chdir(args[1]) == 0)
+	else if (chdir(shell->parser->args) == 0)
 		printf("%s\n", ".");
 }

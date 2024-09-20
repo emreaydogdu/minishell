@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 09:50:30 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/19 09:50:55 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:15:49 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void	cleanup(t_shell *shell)
 		free_parser(shell->parser);
 		shell->parser = NULL;
 	}
+/* 	
 	if (shell->env)
 	{
 		free_env(shell->env);
 		shell->env = NULL;
 	}
-/* 	
 	if (shell->cmdline)
 	{
 		free(shell->cmdline);
@@ -62,15 +62,15 @@ void	free_parser(t_parser *parser)
 	while (parser)
 	{
 		tmp = parser->next;
-		while (parser->full_cmd)
+		while (parser->args)
 		{
-			tmp_fullcmd = parser->full_cmd->next;
-			if(parser->full_cmd)
+			tmp_fullcmd = parser->args->next;
+			if(parser->args)
 			{
-				free(parser->full_cmd);
-				parser->full_cmd = NULL;
+				free(parser->args);
+				parser->args = NULL;
 			}
-			parser->full_cmd = tmp_fullcmd;
+			parser->args = tmp_fullcmd;
 		}
 		free(parser);
 		parser = tmp;

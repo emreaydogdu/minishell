@@ -6,29 +6,33 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:05:13 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/19 15:05:38 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:35:21 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	exec_echo(t_parser *parser) // t_shell *shell, int out
+void	exec_echo(t_shell *shell) // t_shell *shell, int out
 {
-	while (parser->full_cmd != NULL)
+	t_parser *parser;
+	
+	parser = shell->parser;
+	while (parser->args != NULL)
 	{
 		if (parser->outfile != STDOUT_FILENO)
 		{
-			write(parser->outfile, (char *)parser->full_cmd->content, ft_strlen((char *)parser->full_cmd->content));
-			if (parser->full_cmd->next)
+			write(parser->outfile, (char *)parser->args->content, ft_strlen((char *)parser->args->content));
+			if (parser->args->next)
 				write(parser->outfile, " ", 1);
 		}
 		else
 		{
-			printf("%s", (char *)parser->full_cmd->content);
-			if (parser->full_cmd->next)
+			printf("%s", (char *)parser->args->content);
+			if (parser->args->next)
 				printf(" ");
 		}
-		parser->full_cmd = parser->full_cmd->next;
+		parser->args = parser->args->next;
 	}
-	close(parser->outfile);
+	if (parser->outfile != STDOUT_FILENO)
+		close(parser->outfile);
 }

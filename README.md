@@ -19,14 +19,15 @@
 
 #Issues\
 ```echo $?``` return last exitcode 0 or 1\
-```pwd oi``` -> pwd: too many arguments \
-```export hello``` Segfault\
+Done ```pwd oi``` -> pwd: too many arguments \
+```export hello``` Segfault\ compare with BASH
 ```export HELLO=123``` Segfault\
-```export A-``` -> export: not valid in this context: A- && Segfault\
-```export HELLO=123 A``` Segfault\
-```export HELLO="123 A-"``` Wrong lexing\
-```export hello world``` Wrong lexing\
-```export HELLO-=123``` Segfault\
+```export A-``` -> export: not valid in this context: A- // we are pushing A-= but we should 	not. See BASH what it does.
+```export HELLO=123 A``` Segfault\ 
+```export HELLO="123 A-"``` Wrong ft_splitting -> ftsplit should check "" even inside strings  like hello"string "yeah\
+```export hello world``` Wrong ft_splitting -> ftsplit should check "" even inside strings  like hello"string "yeah\
+```export HELLO-=123``` Handle special characters like BASH\
+```env``` we have an extra line to remove.
 
 
 

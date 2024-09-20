@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/19 13:18:05 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/20 19:16:35 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_lexer
 
 typedef struct s_parser
 {
-	t_list			*full_cmd;
+	t_list			*args;
 	char			*full_path;
 	int				infile;
 	int				outfile;
@@ -82,6 +82,7 @@ typedef struct s_shell
 {
 	char			*cmdline;
 	char			*tmp_output;
+	int				exit_status;
 	struct s_lexer	*lexer;
 	struct s_parser	*parser;
 	struct s_env	*env;
@@ -97,13 +98,13 @@ int		env_pop(t_env **env, char *key);
 
 /* BUILTINS */
 int		is_bin(char *cmd);
-void	exec_bin(t_shell *shell, char *cmd, char **args);
-void	exec_echo(t_parser *parser);
-void	exec_cd(char **args);
-void	exec_pwd(void);
-void	exec_env(t_shell *shell);
-void	exec_export(t_shell *shell, char **args);
-void	exec_unset(t_shell *shell, char **args);
+void	exec_bin(t_shell *shell, char *cmd);
+void	exec_echo(t_shell *parser);
+void	exec_cd(t_shell *shell);
+void	exec_pwd(t_shell *shell);
+void	exec_env(t_shell shell);
+void	exec_export(t_shell *shell);
+void	exec_unset(t_shell *shell);
 void	exec_exit(t_shell *shell);
 
 /* todo: DELETE */

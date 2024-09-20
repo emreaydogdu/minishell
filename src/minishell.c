@@ -6,13 +6,13 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/19 13:49:46 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:37:32 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	minishell(void)
+static void	minishell(char **env)
 {
 	struct s_shell	shell;
 
@@ -20,6 +20,7 @@ static void	minishell(void)
 	shell.env = NULL;
 	shell.lexer = NULL;
 	shell.parser = NULL;
+	init_env(&shell, env);
 	while (1)
 	{
  		shell.cmdline = readline("\033[36;1m ➜ minishell$ \033[0m");
@@ -42,18 +43,28 @@ static void	minishell(void)
 		while (current_node)
 		{
 			t_parser *cmd = (t_parser *)current_node;
-			while (cmd->full_cmd)
+			while (cmd->args)
 			{
-				char *content = (char *)cmd->full_cmd->content;
-				cmd->full_cmd = cmd->full_cmd->next;
-				exec_bin(&shell, content, NULL);
+				char *content = (char *)cmd->args->content;
+				cmd->args = cmd->args->next;
+				exec_bin(&shell, content);
 				break ;
 			}
 			current_node = current_node->next;
 		}
+		//free(shell.cmdline);
 		cleanup(&shell);
 		printf("\n");
-		//free(shell.cmdline);
+	}
+	if (shell.env)
+	{
+		free_env(shell.env);
+		shell.env = NULL;
+	}
+	if (shell.cmdline)
+	{
+		free(shell.cmdline);
+		shell.cmdline = NULL;
 	}
 }
 
@@ -61,17 +72,17 @@ int	main(int ac, char **av, char **env)
 {
 	(void) ac;
 	(void) av;
-	minishell();
+	minishell(env);
 
-/*
-	char *cmd = "export";
-	char *args[] = {"unset", "A=Hello", "B=GoodBye", "C=Emre", NULL};
-	char *args2[] = {"unset", "MAIL", "C", NULL};
 
-	t_shell	shell;
-	shell.env = NULL;
-	init_env(&shell, env);
-	exec_env(&shell);
-*/
+	// char *cmd = "export";
+	// char *args[] = {"unset", "A=Hello", "B=GoodBye", "C=Emre", NULL};
+	// char *args2[] = {"unset", "MAIL", "C", NULL};
+
+	// t_shell	shell;
+	// shell.env = NULL;
+	
+	// exec_env(&shell);
+
 	return (0);
 }

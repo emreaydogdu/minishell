@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:10:13 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/19 15:03:46 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/20 19:11:33 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,20 @@ int	is_bin(char *cmd)
 		return (0);
 }
 
-void	exec_bin(t_shell *shell, char *cmd, char **args)
+void	exec_bin(t_shell *shell, char *cmd)
 {
 	if (ft_strncmp(cmd, "echo", 4) == 0)
-		exec_echo(shell->parser);
+		exec_echo(shell);
 	else if (ft_strncmp(cmd, "pwd", 3) == 0)
-		exec_pwd();
+		exec_pwd(shell);
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
-		exec_cd(args);
+		exec_cd(shell);
 	else if (ft_strncmp(cmd, "export", 6) == 0)
-		exec_export(shell, args);
+		exec_export(shell);
 	else if (ft_strncmp(cmd, "unset", 5) == 0)
-		exec_unset(shell, args);
+		exec_unset(shell);
 	else if (ft_strncmp(cmd, "env", 3) == 0)
-		exec_env(shell);
+		exec_env(*shell);
 	else if (ft_strncmp(cmd, "exit", 4) == 0 && (shell->cmdline[4] == '\0' || shell->cmdline[4] == ' '))
 		exec_exit(shell);
 	else
