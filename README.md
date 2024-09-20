@@ -19,6 +19,8 @@
 
 #Issues\
 ```echo $?``` return last exitcode 0 or 1\
+i should expand $? to its value.
+
 Done ```pwd oi``` -> pwd: too many arguments \
 ```export hello``` Segfault\ compare with BASH
 ```export HELLO=123``` Segfault\

@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/20 19:31:16 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/20 19:56:13 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ void	expander(t_shell *shell)
 		{
 			if (lexer->input[i] == '\'')
 				single_quote = !single_quote;
+			/* if (lexer->input[i] == '$' && lexer->input[i] == '?' && !single_quote)
+				printf("exit status = %d\n", shell->exit_status); LAST, continue Home */
 			if (lexer->input[i] == '$' && !single_quote)
 			{
 				start = ft_substr(lexer->input, 0,  i);
