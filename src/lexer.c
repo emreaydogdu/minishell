@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:54:47 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/20 14:14:46 by emaydogd         ###   ########.fr       */
+/*   Updated: 2024/09/20 14:46:28 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	lexer(t_shell *shell)
 		else if (ft_strncmp(str[i], ">", 1) == 0)
 			push(&shell->lexer, ">", TOKEN_REDIR_OUT, pos);
 		else
-			push(&shell->lexer, trim(str[i]), TOKEN_ARG, pos);
+			push(&shell->lexer, str[i], TOKEN_ARG, pos);
 		pos++;
 	}
 	free_split_res(str);

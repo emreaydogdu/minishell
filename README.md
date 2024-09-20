@@ -17,6 +17,16 @@
 - https://42-cursus.gitbook.io/guide/rank-03/minishell/functions
 - https://minishell.simple.ink
 
+#Issues\
+```echo $?``` return last exitcode 0 or 1\
+```pwd oi``` -> pwd: too many arguments \
+```export hello``` Segfault\
+```export HELLO=123``` Segfault\
+```export A-``` -> export: not valid in this context: A- && Segfault\
+```export HELLO=123 A``` Segfault\
+```export HELLO="123 A-"``` Wrong lexing\
+```export hello world``` Wrong lexing\
+```export HELLO-=123``` Segfault\
 
 
 

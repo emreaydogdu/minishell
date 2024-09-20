@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/19 12:52:27 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:17:14 by emaydogd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	expander(t_shell *shell)
 	t_lexer * lexer;
 	int			i;
 	int			j;
+	int			single_quote;
 	char		*key;
 	char		*key_env;
 	char		*start;
@@ -81,22 +82,31 @@ void	expander(t_shell *shell)
 	dest = NULL;
 	lexer = shell->lexer;
 
-	correct_single_quotes(shell->cmdline); // Chakib : not supposed to write here, should be done in executer
+	//correct_single_quotes(shell->cmdline); // Chakib : not supposed to write here, should be done in executer
 	while (lexer)
 	{
 		i = 0;
+		single_quote = 0;
 		while (lexer->input[i])
 		{
-			if (lexer->input[i] == '$')
+			if (lexer->input[i] == '\'')
+				single_quote = !single_quote;
+			if (lexer->input[i] == '$' && !single_quote)
 			{
 				start = ft_substr(lexer->input, 0,  i);
 				j = i;
 				while (lexer->input[j] != ' ' && lexer->input[j] != '"'  && lexer->input[j] != '\'' && lexer->input[j])
 					j++;
 				key = ft_substr(lexer->input, i + 1, j - i - 1);
+				if (strcmp(key, "") == 0)
+				{
+					i++;
+					continue ;
+				}
 				end = ft_substr(lexer->input,j, ft_strlen(lexer->input) - j + 1);
-				// // todo: check if arg is existing or not. reproduce bash behavior.
 				key_env = getenv(key);
+				if (key_env == NULL)
+					key_env = "";
 				dest = ft_calloc((ft_strlen(start) + ft_strlen(key_env) + ft_strlen(end) + 1), sizeof(char));
 				if (!dest)
 				 	return ;
