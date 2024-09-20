@@ -113,6 +113,9 @@ void	print_cmdtable(t_shell shell);
 int		correct_single_quotes(char * input);
 void	write_single_quotes(char *input);
 
+/* HELPER FUNCTIONS */
+char	*trim(char *str);
+
 // Cleaning
 void	cleanup(t_shell *shell);
 void	free_lexer(t_lexer *lexer);
