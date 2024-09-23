@@ -6,24 +6,23 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:10:13 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/20 19:11:33 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:04:25 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_path(t_parser *parser, char * cmd)
+static void	exec_path(t_shell *shell, char *cmd)
 {
 	char * cmd_path;
-	char		*buffer;
 
-	buffer = malloc(sizeof(char) * 100 + 1);
+	t_parser *parser;
+	
+	parser = shell->parser;
 	cmd_path = get_external_cmd_path(cmd);
 	if (parser->infile != STDIN_FILENO)
-	{
 		dup2(parser->infile, STDIN_FILENO);
-	}
-	exec_cmd(cmd_path, cmd);
+	exec_cmd(cmd_path, parser->args);
 }
 
 int	is_bin(char *cmd)
@@ -46,6 +45,23 @@ int	is_bin(char *cmd)
 		return (0);
 }
 
+void	exec_start(t_shell *shell)
+{
+	t_parser *current_node = shell->parser;
+	while (current_node)
+	{
+		t_parser *cmd = (t_parser *)current_node;
+		while (cmd->args)
+		{
+			char *content = (char *)cmd->args->content;
+			cmd->args = cmd->args->next;
+			exec_bin(shell, content);
+			break ;
+		}
+		current_node = current_node->next;
+	}
+}
+
 void	exec_bin(t_shell *shell, char *cmd)
 {
 	if (ft_strncmp(cmd, "echo", 4) == 0)
@@ -63,5 +79,5 @@ void	exec_bin(t_shell *shell, char *cmd)
 	else if (ft_strncmp(cmd, "exit", 4) == 0 && (shell->cmdline[4] == '\0' || shell->cmdline[4] == ' '))
 		exec_exit(shell);
 	else
-		exec_path(shell->parser, cmd);
+		exec_path(shell, cmd);
 }

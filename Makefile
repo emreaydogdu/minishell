@@ -1,7 +1,7 @@
 NAME	=	minishell
 CC		=	cc
 RL		=	-lreadline
-CFLAGS	=	#-Wall -Wextra -Werror
+CFLAGS	=	-g #-Wall -Wextra -Werror
 RM		=	rm -f -r
 
 SRCC	=	minishell.c lexer.c expander.c parser.c printers.c executer.c \

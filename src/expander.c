@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/23 13:49:38 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:18:56 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	expander(t_shell *shell)
 				j = i;
 				while (lexer->input[j] != ' ' && lexer->input[j] != '"'  && lexer->input[j] != '\'' && lexer->input[j])
 					j++;
-				if (lexer->input[i + 1] == '?')
+				if (lexer->input[i + 1] && lexer->input[i + 1] == '?')
 				{
 					key_env = ft_itoa(shell->exit_status);
 				}
@@ -109,7 +109,7 @@ void	expander(t_shell *shell)
 						i++;
 						continue ;
 					}
-					key_env = getenv(key);
+					key_env = ft_getenv(shell, key);
 					if (key_env == NULL)
 						key_env = "";
 					free(key);
@@ -123,7 +123,7 @@ void	expander(t_shell *shell)
 				dest = ft_strcat(dest, end);
 				lexer->input = ft_strdup(dest);
 				free(start);
-				free(key_env);
+				//free(key_env); // Chakib : ATTENTION with SEGFAULT
 				free(end);
 				free(dest);
 				i = j;

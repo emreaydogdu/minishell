@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:39:05 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/12 11:04:00 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:18:50 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,18 @@ void	init_env(t_shell *shell, char **env)
 		env_push(&shell->env, key, val);
 		i++;
 	}
+}
+
+char *ft_getenv(t_shell *shell, char *key)
+{
+	t_env *tmp;
+
+	tmp = shell->env;
+	while (tmp)
+	{
+		if (ft_strcmp(key, tmp->key) == 0)
+			return (tmp->value);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }

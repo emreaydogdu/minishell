@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/23 12:25:06 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:04:41 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_lexer
 typedef struct s_parser
 {
 	t_list			*args;
-	char			*full_path;
+	char			**full_path;
 	int				infile;
 	int				outfile;
 	struct s_parser	*next;
@@ -106,6 +106,8 @@ void	exec_env(t_shell shell);
 void	exec_export(t_shell *shell);
 void	exec_unset(t_shell *shell);
 void	exec_exit(t_shell *shell);
+void	exec_start(t_shell *shell);
+void	exec_cmd(char *path, t_list *args);
 
 /* todo: DELETE */
 void	print_lexer(t_shell shell);
@@ -126,5 +128,6 @@ void	free_env(t_env *env);
 
 int		*piping();
 char 	*get_external_cmd_path(char *cmd);
-void	exec_cmd(char *path, char *cmd);
+char	*ft_getenv(t_shell *shell, char *key);
+
 #endif

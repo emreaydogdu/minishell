@@ -31,5 +31,6 @@ Done ```export HELLO=123``` Segfault\
 ```export HELLO-=123``` Handle special characters like BASH\
 ```env``` we have an extra line to remove.
 
+```in Expander``` Fix this: //free(key_env); // Chakib : ATTENTION with SEGFAULT
 
 

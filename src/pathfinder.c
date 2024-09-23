@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 14:45:30 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/17 13:58:16 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:18:45 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char*	get_external_cmd_path(char * cmd)
     return (NULL);
 }
 
-void	exec_cmd(char *path, char *cmd)
+void	exec_cmd(char *path, t_list *args)
 {
 	pid_t	pid;
 	int		status;
@@ -61,11 +61,21 @@ void	exec_cmd(char *path, char *cmd)
 	}
 	else if (pid == 0)
 	{
-		char *args[] = {cmd, NULL};
-    	char *envp[] = {NULL};
-		if (execve(path, args, envp) == -1)
+		char **str;
+		str = malloc(sizeof(char *) * ft_lstsize(args) + 2);
+		str[0] = path;
+		int i = 1;
+		while (args)
 		{
-			perror(cmd);
+			str[i] = (char *)args->content;
+			args = args->next;
+			i++;
+		}
+		str[i] = NULL;
+    	char *envp[] = {NULL};
+		if (execve(path, str, envp) == -1)
+		{
+			//perror(args);
 			exit(EXIT_FAILURE);
 		}
 	}

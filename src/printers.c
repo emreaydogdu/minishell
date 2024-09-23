@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 23:19:16 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/20 18:12:22 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:28:24 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,5 @@ void	print_lexer(t_shell shell)
 		printf("%20s - type: %6s  pos: %zu\n", shell.lexer->input, enum_dict[shell.lexer->type], shell.lexer->pos);
 		shell.lexer = shell.lexer->next;
 	}
+	printf("------------------------------------------------\n");	
 }

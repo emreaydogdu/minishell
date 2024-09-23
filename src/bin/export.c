@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:32:10 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/23 14:18:02 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:26:14 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ void	exec_export(t_shell *shell)
 				break ;
 			j++;
 		}
+		if (ft_strlen(shell->parser->args->content) == j)
+		{
+			shell->parser->args = shell->parser->args->next;
+			continue ;
+		}
 		key = ft_substr(shell->parser->args->content, 0, j);
 		if (is_valid_key(key) == 0)
 		{
@@ -55,9 +60,10 @@ void	exec_export(t_shell *shell)
 			break ;
 		}
 		val = ft_substr(shell->parser->args->content, j + 1, ft_strlen(shell->parser->args->content) - j + 1);
-		env_push(&shell->env,key, val);
+		if (ft_getenv(shell, key))
+			env_pop(&shell->env, key);
+		env_push(&shell->env, key, val);
 		shell->parser->args = shell->parser->args->next;
 		error(shell, NULL, NULL);
 	}
 }
-

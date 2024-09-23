@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:36:16 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/20 17:51:57 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:28:43 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void print_cmdtable(t_shell shell)
 			printf("  No command arguments.\n");
 		current_node = current_node->next;
 	}
+	printf("------------------------------------------------\n");
 }
 
 static t_parser *new_cmd_node()
