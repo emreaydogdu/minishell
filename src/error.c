@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/08 21:24:37 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/23 14:32:07 by chbachir         ###   ########.fr       */
+/*   Created: 2024/09/23 12:13:52 by chbachir          #+#    #+#             */
+/*   Updated: 2024/09/23 12:23:43 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
-void	exec_pwd(t_shell *shell)
+void	error(t_shell *shell, char *err_msg, char *args)
 {
-	char	*buffer;
-
-	buffer = malloc(sizeof(char) * 4097);
-	printf("%s\n", getcwd(buffer, 4097));
-	error(shell, NULL, NULL);
-	free(buffer);
+	if (!err_msg)
+		shell->exit_status = 0;
+	else
+	{
+		printf(err_msg, args);
+		shell->exit_status = 1;
+	}
 }

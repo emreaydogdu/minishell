@@ -23,7 +23,7 @@ i should expand $? to its value.
 
 Done ```pwd oi``` -> pwd: too many arguments \
 ```export hello``` Segfault\ compare with BASH
-```export HELLO=123``` Segfault\
+Done ```export HELLO=123``` Segfault\
 ```export A-``` -> export: not valid in this context: A- // we are pushing A-= but we should 	not. See BASH what it does.
 ```export HELLO=123 A``` Segfault\ 
 ```export HELLO="123 A-"``` Wrong ft_splitting -> ftsplit should check "" even inside strings  like hello"string "yeah\

@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/20 19:56:13 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:49:38 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,24 +91,30 @@ void	expander(t_shell *shell)
 		{
 			if (lexer->input[i] == '\'')
 				single_quote = !single_quote;
-			/* if (lexer->input[i] == '$' && lexer->input[i] == '?' && !single_quote)
-				printf("exit status = %d\n", shell->exit_status); LAST, continue Home */
 			if (lexer->input[i] == '$' && !single_quote)
 			{
 				start = ft_substr(lexer->input, 0,  i);
 				j = i;
 				while (lexer->input[j] != ' ' && lexer->input[j] != '"'  && lexer->input[j] != '\'' && lexer->input[j])
 					j++;
-				key = ft_substr(lexer->input, i + 1, j - i - 1);
-				if (strcmp(key, "") == 0)
+				if (lexer->input[i + 1] == '?')
 				{
-					i++;
-					continue ;
+					key_env = ft_itoa(shell->exit_status);
+				}
+				else
+				{
+					key = ft_substr(lexer->input, i + 1, j - i - 1);
+					if (ft_strcmp(key, "") == 0)
+					{
+						i++;
+						continue ;
+					}
+					key_env = getenv(key);
+					if (key_env == NULL)
+						key_env = "";
+					free(key);
 				}
 				end = ft_substr(lexer->input,j, ft_strlen(lexer->input) - j + 1);
-				key_env = getenv(key);
-				if (key_env == NULL)
-					key_env = "";
 				dest = ft_calloc((ft_strlen(start) + ft_strlen(key_env) + ft_strlen(end) + 1), sizeof(char));
 				if (!dest)
 				 	return ;
@@ -117,7 +123,7 @@ void	expander(t_shell *shell)
 				dest = ft_strcat(dest, end);
 				lexer->input = ft_strdup(dest);
 				free(start);
-				free(key);
+				free(key_env);
 				free(end);
 				free(dest);
 				i = j;

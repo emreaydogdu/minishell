@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/20 19:45:46 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 12:25:06 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void	write_single_quotes(char *input);
 
 /* HELPER FUNCTIONS */
 char	*trim(char *str);
+void	error(t_shell *shell, char *err_msg, char *args);
 
 // Cleaning
 void	cleanup(t_shell *shell);

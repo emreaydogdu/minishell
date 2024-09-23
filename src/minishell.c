@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/20 18:37:32 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 11:31:42 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	minishell(char **env)
 	shell.env = NULL;
 	shell.lexer = NULL;
 	shell.parser = NULL;
+	shell.exit_status = 0;
 	init_env(&shell, env);
 	while (1)
 	{
