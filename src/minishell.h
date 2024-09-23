@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/23 16:04:41 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:24:14 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ typedef struct s_lexer
 typedef struct s_parser
 {
 	t_list			*args;
-	char			**full_path;
 	int				infile;
 	int				outfile;
 	struct s_parser	*next;

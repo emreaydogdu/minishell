@@ -34,3 +34,5 @@ Done ```export HELLO=123``` Segfault\
 ```in Expander``` Fix this: //free(key_env); // Chakib : ATTENTION with SEGFAULT
 
 
+
+compare with bash and fix

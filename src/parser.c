@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:36:16 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/23 15:28:43 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:24:38 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void print_cmdtable(t_shell shell)
 		t_parser *cmd = (t_parser *)current_node;
 		printf("		infile: %d\n", cmd->infile);
 		printf("		outfile: %d\n", cmd->outfile);
-		printf("		full_path: %s\n", cmd->full_path ? cmd->full_path : "NULL (because command is a builtin)");
 		int i = 0;
 		if (cmd->args)
 		{
@@ -48,7 +47,6 @@ static t_parser *new_cmd_node()
 	if (!cmd)
 		return NULL;
 	cmd->args = NULL;
-	cmd->full_path = NULL;
 	cmd->infile = STDIN_FILENO;   // Default to standard input
 	cmd->outfile = STDOUT_FILENO; // Default to standard output
 	cmd->next = NULL;
