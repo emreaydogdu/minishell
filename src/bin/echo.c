@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:05:13 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/25 21:56:26 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/25 22:16:42 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	valid_quotes(char *str)
 		i++;
 	}
 	if ((nb_single_quotes % 2) == 0 ||	(nb_double_quotes % 2) == 0)
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }
 
 
@@ -72,7 +72,7 @@ void	exec_echo(t_shell *shell) // t_shell *shell, int out
 	while (parser->args != NULL)
 	{
 		content = remove_quotes((char *)parser->args->content);
-		if (valid_quotes(content))
+		if (!valid_quotes(content))
 		{
 			printf("never");
 			error(shell, "bad syntax", NULL);
