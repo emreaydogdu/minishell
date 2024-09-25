@@ -36,3 +36,11 @@ Done ```export HELLO=123``` Segfault\
 
 
 compare with bash and fix
+
+I stopped at " echo.c "
+`  echo "hello world"  ` works
+`  echo hello""word  `  works
+`  echo "$PWD"  `  		works
+`  echo '$PWD'  `     	works
+`doesnt work for 2 args->content` handle it in a loop for (args->next->content)
+
