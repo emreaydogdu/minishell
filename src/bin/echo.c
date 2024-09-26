@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:05:13 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/26 12:18:55 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:15:35 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,39 +40,52 @@
 	return (str);
 } */
 
-char *remove_quotes(char *str)
-{
-    int len = ft_strlen(str);
+char *remove_quotes(char *str) {
+    int len = strlen(str);
+    int i, j;
+
+    // Remove matching quotes from the start and end
     int start = 0;
     int end = len - 1;
-    int opening_quotes = 0;
-    int closing_quotes = 0;
-
-    while (start < len && (str[start] == '"' || str[start] == '\''))
-    {
-        if (start + 1 < len && str[start] == str[start + 1])
-            start += 2;
-        else
-            break;
-        opening_quotes++;
+    // Count leading quotes
+    while (start < len && (str[start] == '"' || str[start] == '\'')) {
+        start++;
     }
-
-    while (end >= start && (str[end] == '"' || str[end] == '\''))
-    {
-        if (end - 1 >= start && str[end] == str[end - 1])
-            end -= 2;
-        else
-            break;
-        closing_quotes++;
+    // Count trailing quotes
+    while (end >= 0 && (str[end] == '"' || str[end] == '\'')) {
+        end--;
     }
-
-    if (opening_quotes == closing_quotes)
-    {
-        str[end + 1] = '\0';
-        return (str + start);
+    // Calculate the number of complete pairs of quotes
+    int pairs;
+    if (start < len - end - 1) {
+        pairs = start;
+    } else {
+        pairs = len - end - 1;
     }
-
-    return (str);
+    // Adjust start and end based on complete pairs of quotes
+    if (pairs > 0) {
+        start = pairs;
+        end = len - pairs - 1;
+    } else {
+        start = 0;
+        end = len - 1;
+    }
+    // Remove matching quotes inside the string
+    i = start;
+    j = start;
+    
+    while (i <= end) {
+        if ((str[i] == '"' || str[i] == '\'') && i + 1 <= end && str[i] == str[i + 1]) {
+            // Skip over matched pair of quotes
+            i += 2;
+        } else {
+            // Copy non-quote character or unmatched quote
+            str[j++] = str[i++];
+        }
+    }
+    // Null-terminate the resulting string
+    str[j] = '\0';
+    return str + start;
 }
 
 int	valid_quotes(char *str)
@@ -82,7 +95,6 @@ int	valid_quotes(char *str)
 
 	nb_single_quotes = 0;
 	nb_double_quotes = 0;
-	printf("str valid quotes ? = [%s]\n", str);
 	while (*str)
 	{
 		if (*str == '"')
@@ -91,11 +103,9 @@ int	valid_quotes(char *str)
 			nb_single_quotes++;
 		str++;
 	}
-	printf("single quotes = %d\n", nb_single_quotes);
-	printf("double quotes %d\n", nb_double_quotes);
-	if ((nb_single_quotes % 2) == 0 ||	(nb_double_quotes % 2) == 0)
-		return (0);
-	return (1);
+	if ((nb_single_quotes % 2) == 0 && (nb_double_quotes % 2) == 0)
+		return (1);
+	return (0);
 }
 
 
@@ -107,29 +117,27 @@ void	exec_echo(t_shell *shell) // t_shell *shell, int out
 
 	while (parser->args != NULL)
 	{
-		printf("(char *)parser->args->content = [%s]\n", (char *)parser->args->content);
+		//printf("(char *)parser->args->content = [%s]\n", (char *)parser->args->content);
 		content = remove_quotes((char *)parser->args->content);
-		/* if (valid_quotes((char *)parser->args->content))
+		if (valid_quotes((content)))
 		{
-			content = remove_quotes((char *)parser->args->content);
-			printf("content = [%s]\n", content);
+			if (parser->outfile != STDOUT_FILENO)
+			{
+				write(parser->outfile, content, ft_strlen(content));
+				if (parser->args->next)
+					write(parser->outfile, " ", 1);
+			}
+			else
+			{
+				printf("%s", content);
+				if (parser->args->next)
+					printf(" ");
+			}
 		}
 		else
 		{
 			error(shell, "bad syntax", NULL);
 			return ;
-		} */
-		if (parser->outfile != STDOUT_FILENO)
-		{
-			write(parser->outfile, content, ft_strlen(content));
-			if (parser->args->next)
-				write(parser->outfile, " ", 1);
-		}
-		else
-		{
-			printf("%s", content);
-			if (parser->args->next)
-				printf(" ");
 		}
 		parser->args = parser->args->next;
 	}
