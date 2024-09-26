@@ -6,13 +6,13 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:05:13 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/25 22:16:42 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:18:55 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	remove_inside_double_quotes(char* str) {
+/* void	remove_inside_double_quotes(char* str) {
     int i = 0;
     int j = 0;
     
@@ -25,9 +25,9 @@ void	remove_inside_double_quotes(char* str) {
         j++;
     }
     str[j] = '\0';
-}
+} */
 
-char	*remove_quotes(char *str)
+/* char	*remove_quotes(char *str)
 {
 	int len = ft_strlen(str);
 	if (len >= 2 && ((str[0] == '"' && str[len - 1] == '"') || 
@@ -38,25 +38,61 @@ char	*remove_quotes(char *str)
 	}
 	remove_inside_double_quotes(str);
 	return (str);
+} */
+
+char *remove_quotes(char *str)
+{
+    int len = ft_strlen(str);
+    int start = 0;
+    int end = len - 1;
+    int opening_quotes = 0;
+    int closing_quotes = 0;
+
+    while (start < len && (str[start] == '"' || str[start] == '\''))
+    {
+        if (start + 1 < len && str[start] == str[start + 1])
+            start += 2;
+        else
+            break;
+        opening_quotes++;
+    }
+
+    while (end >= start && (str[end] == '"' || str[end] == '\''))
+    {
+        if (end - 1 >= start && str[end] == str[end - 1])
+            end -= 2;
+        else
+            break;
+        closing_quotes++;
+    }
+
+    if (opening_quotes == closing_quotes)
+    {
+        str[end + 1] = '\0';
+        return (str + start);
+    }
+
+    return (str);
 }
 
 int	valid_quotes(char *str)
 {
 	int nb_single_quotes;
 	int nb_double_quotes;
-	int i;
 
 	nb_single_quotes = 0;
 	nb_double_quotes = 0;
-	i = 0;
-	while (str[i])
+	printf("str valid quotes ? = [%s]\n", str);
+	while (*str)
 	{
-		if (str[i] == '"')
+		if (*str == '"')
 			nb_double_quotes++;
-		if (str[i] == '\'')
+		else if (*str == '\'')
 			nb_single_quotes++;
-		i++;
+		str++;
 	}
+	printf("single quotes = %d\n", nb_single_quotes);
+	printf("double quotes %d\n", nb_double_quotes);
 	if ((nb_single_quotes % 2) == 0 ||	(nb_double_quotes % 2) == 0)
 		return (0);
 	return (1);
@@ -71,13 +107,18 @@ void	exec_echo(t_shell *shell) // t_shell *shell, int out
 
 	while (parser->args != NULL)
 	{
+		printf("(char *)parser->args->content = [%s]\n", (char *)parser->args->content);
 		content = remove_quotes((char *)parser->args->content);
-		if (!valid_quotes(content))
+		/* if (valid_quotes((char *)parser->args->content))
 		{
-			printf("never");
+			content = remove_quotes((char *)parser->args->content);
+			printf("content = [%s]\n", content);
+		}
+		else
+		{
 			error(shell, "bad syntax", NULL);
 			return ;
-		}
+		} */
 		if (parser->outfile != STDOUT_FILENO)
 		{
 			write(parser->outfile, content, ft_strlen(content));
