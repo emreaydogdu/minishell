@@ -6,144 +6,119 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:05:13 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/28 10:34:26 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/30 15:03:33 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/* void	remove_inside_double_quotes(char* str) {
-    int i = 0;
-    int j = 0;
-    
+int valid_quotes(char *str)
+{
+    if (!str)
+        return 0;
+
+    int inside_single = 0;
+    int inside_double = 0;
+    size_t i = 0;
+
     while (str[i] != '\0')
-	{
-        if (str[i] == '"' && str[i + 1] == '"')
-            i+=2;
-        str[j] = str[i];
-        i++;
-        j++;
-    }
-    str[j] = '\0';
-} */
-
-/* char	*remove_quotes(char *str)
-{
-	int len = ft_strlen(str);
-	if (len >= 2 && ((str[0] == '"' && str[len - 1] == '"') || 
-		(str[0] == '\'' && str[len - 1] == '\'')))
-	{
-		str[len - 1] = '\0';
-		return (str + 1);
-	}
-	remove_inside_double_quotes(str);
-	return (str);
-} */
-
-char *remove_quotes(char *str) {
-    int len = strlen(str);
-    int i, j;
-
-    // Remove matching quotes from the start and end
-    int start = 0;
-    int end = len - 1;
-    // Count leading quotes
-    while (start < len && (str[start] == '"' || str[start] == '\'')) {
-        start++;
-    }
-    // Count trailing quotes
-    while (end >= 0 && (str[end] == '"' || str[end] == '\'')) {
-        end--;
-    }
-    // Calculate the number of complete pairs of quotes
-    int pairs;
-    if (start < len - end - 1) {
-        pairs = start;
-    } else {
-        pairs = len - end - 1;
-    }
-    // Adjust start and end based on complete pairs of quotes
-    if (pairs > 0) {
-        start = pairs;
-        end = len - pairs - 1;
-    } else {
-        start = 0;
-        end = len - 1;
-    }
-    // Remove matching quotes inside the string
-    i = start;
-    j = start;
-    
-    while (i <= end) {
-        if ((str[i] == '"' || str[i] == '\'') && i + 1 <= end && str[i] == str[i + 1]) {
-            // Skip over matched pair of quotes
-            i += 2;
-        } else {
-            // Copy non-quote character or unmatched quote
-            str[j++] = str[i++];
+    {
+        if (str[i] == '\'' && !inside_double)
+        {
+            inside_single = !inside_single;
         }
+        else if (str[i] == '\"' && !inside_single)
+        {
+            inside_double = !inside_double;
+        }
+        i++;
     }
-    // Null-terminate the resulting string
-    str[j] = '\0';
-    return str + start;
+
+    return (!inside_single && !inside_double);
 }
 
-int	valid_quotes(char *str)
+// Function to remove matching quotes from the input string
+char *remove_quotes(char *str)
 {
-	int nb_single_quotes;
-	int nb_double_quotes;
+    if (!str)
+        return NULL;
 
-	nb_single_quotes = 0;
-	nb_double_quotes = 0;
-	while (*str)
-	{
-		if (*str == '"')
-			nb_double_quotes++;
-		else if (*str == '\'')
-			nb_single_quotes++;
-		str++;
-	}
-	if ((nb_single_quotes % 2) == 0 && (nb_double_quotes % 2) == 0)
-		return (1);
-	return (0);
+    size_t len = ft_strlen(str);
+    char *result = malloc(len + 1); // Allocate maximum possible size
+    if (!result)
+        return NULL;
+
+    size_t i = 0; // Index for input string
+    size_t j = 0; // Index for output string
+
+    int inside_single = 0;
+    int inside_double = 0;
+
+    while (str[i] != '\0')
+    {
+        if (str[i] == '\'' && !inside_double)
+        {
+            inside_single = !inside_single;
+            // Do not copy the single quote
+        }
+        else if (str[i] == '\"' && !inside_single)
+        {
+            inside_double = !inside_double;
+            // Do not copy the double quote
+        }
+        else
+        {
+            result[j] = str[i];
+            j++;
+        }
+        i++;
+    }
+
+    result[j] = '\0';
+
+    return result;
 }
 
-
-void	exec_echo(t_shell *shell) // t_shell *shell, int out
+void exec_echo(t_shell *shell)
 {
-	t_parser 	*parser;
-	char		*content;
-	parser = shell->parser;
+    t_parser    *parser;
+    char        *content;
+    char        *original;
 
-	while (parser->args != NULL)
-	{
-		//printf("(char *)parser->args->content = [%s]\n", (char *)parser->args->content);
-		content = remove_quotes((char *)parser->args->content);
-		printf("content = [[%s]]\n", content);
-		if (valid_quotes((content)))
-		{
-			if (parser->outfile != STDOUT_FILENO)
-			{
-				write(parser->outfile, content, ft_strlen(content));
-				if (parser->args->next)
-					write(parser->outfile, " ", 1);
-			}
-			else
-			{
-				printf("%s", content);
-				if (parser->args->next)
-					printf(" ");
-			}
-		}
-		else
-		{
-			error(shell, "bad syntax", NULL);
-			return ;
-		}
-		parser->args = parser->args->next;
-	}
-	if (parser->outfile != STDOUT_FILENO)
-		close(parser->outfile);
-	error(shell, NULL, NULL);
+    parser = shell->parser;
+    while (parser->args != NULL)
+    {
+        original = (char *)parser->args->content;
+        // Validate quotes before removing them
+        if (valid_quotes(original))
+        {
+            content = remove_quotes(original);
+            printf("correct_output = [[%s]]\n", content);
+
+            if (parser->outfile != STDOUT_FILENO)
+            {
+                write(parser->outfile, content, ft_strlen(content));
+                if (parser->args->next)
+                    write(parser->outfile, " ", 1);
+            }
+            else
+            {
+                printf("%s", content);
+                if (parser->args->next)
+                    printf(" ");
+            }
+            free(content);
+        }
+        else
+        {
+            // If quotes are invalid, trigger an error
+            error(shell, "bad syntax", NULL);
+            return ;
+        }
+        parser->args = parser->args->next;
+    }
+
+    if (parser->outfile != STDOUT_FILENO)
+        close(parser->outfile);
+    error(shell, NULL, NULL);
 }
-
