@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:05:13 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/26 13:15:35 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/09/28 10:34:26 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	exec_echo(t_shell *shell) // t_shell *shell, int out
 	{
 		//printf("(char *)parser->args->content = [%s]\n", (char *)parser->args->content);
 		content = remove_quotes((char *)parser->args->content);
+		printf("content = [[%s]]\n", content);
 		if (valid_quotes((content)))
 		{
 			if (parser->outfile != STDOUT_FILENO)
