@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:05:13 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/30 15:03:33 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/01 14:59:41 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ void exec_echo(t_shell *shell)
         }
         parser->args = parser->args->next;
     }
-
     if (parser->outfile != STDOUT_FILENO)
         close(parser->outfile);
     error(shell, NULL, NULL);
