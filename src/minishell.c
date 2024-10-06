@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/30 15:18:04 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/02 12:44:56 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static void	minishell(char **env)
 
 		//free(shell.cmdline);
 		cleanup(&shell);
-		printf("\n");
 	}
 	if (shell.env)
 	{
