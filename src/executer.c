@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:10:13 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/23 16:04:25 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/07 21:57:44 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ void	exec_start(t_shell *shell)
 void	exec_bin(t_shell *shell, char *cmd)
 {
 	if (ft_strncmp(cmd, "echo", 4) == 0)
+	{
 		exec_echo(shell);
+		printf("\n");
+	}
 	else if (ft_strncmp(cmd, "pwd", 3) == 0)
 		exec_pwd(shell);
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
