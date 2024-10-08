@@ -37,12 +37,7 @@ Done ```export HELLO=123``` Segfault\
 
 compare with bash and fix
 
-`echo issues`
-4. echo hello'world' i get hello'world' instead of helloworld
-9. echo "aspas ->'" i get bad syntax instead of aspas ->'
-10. same thing with echo "aspas -> ' "
-11.
-12.
-21. echo $?HELLO i get 0 instead of 0HELLO
+`builtin issues`
+40. too many args
 
 

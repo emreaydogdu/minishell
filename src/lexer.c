@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:54:47 by chbachir          #+#    #+#             */
-/*   Updated: 2024/09/23 11:26:48 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/08 13:31:57 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,51 @@ void	free_split_res(char **split_res)
 	free(split_res);
 }
 
-void	lexer(t_shell *shell)
+void lexer(t_shell *shell)
+{
+    size_t i;
+    size_t pos;
+    char **str;
+    int error_flag = 0;
+
+    str = custom_split(shell->cmdline, &error_flag); // Utilisation de custom_split avec gestion des erreurs
+    if (!str)
+    {
+        if (error_flag)
+        {
+            error(shell, "Lexer: Mismatched quotes detected\n", NULL);
+        }
+        else
+        {
+            error(shell, "Lexer: Memory allocation failed\n", NULL);
+        }
+        return;
+    }
+
+    i = 0;
+    pos = 0;
+    shell->lexer = NULL;
+    while (str[i] != NULL)
+    {
+        if (ft_strncmp(str[i], "|", 1) == 0)
+            push(&shell->lexer, "|", TOKEN_PIPE, pos);
+        else if (ft_strncmp(str[i], "<<", 2) == 0)
+            push(&shell->lexer, "<<", TOKEN_REDIR_HEREDOC, pos);
+        else if (ft_strncmp(str[i], ">>", 2) == 0)
+            push(&shell->lexer, ">>", TOKEN_REDIR_APPEND, pos);
+        else if (ft_strncmp(str[i], "<", 1) == 0)
+            push(&shell->lexer, "<", TOKEN_REDIR_IN, pos);
+        else if (ft_strncmp(str[i], ">", 1) == 0)
+            push(&shell->lexer, ">", TOKEN_REDIR_OUT, pos);
+        else
+            push(&shell->lexer, str[i], TOKEN_ARG, pos);
+        pos++;
+        i++;
+    }
+    free_split_res(str);
+}
+
+/* void	lexer(t_shell *shell)
 {
 	size_t	i;
 	size_t	pos;
@@ -82,4 +126,42 @@ void	lexer(t_shell *shell)
 		pos++;
 	}
 	free_split_res(str);
-}
+} */
+
+/* void	lexer(t_shell *shell)
+{
+    size_t	i;
+    size_t	pos;
+    char	**str;
+
+    str = custom_split(shell->cmdline); // Use the custom_split function
+    if (!str)
+    {
+        // Handle allocation failure
+        error(shell, "Lexer: Memory allocation failed\n", NULL);
+        return;
+    }
+
+    i = 0;
+    pos = 0;
+    shell->lexer = NULL;
+    while (str[i] != NULL)
+    {
+        if (ft_strncmp(str[i], "|", 1) == 0)
+            push(&shell->lexer, "|", TOKEN_PIPE, pos);
+        else if (ft_strncmp(str[i], "<<", 2) == 0)
+            push(&shell->lexer, "<<", TOKEN_REDIR_HEREDOC, pos);
+        else if (ft_strncmp(str[i], ">>", 2) == 0)
+            push(&shell->lexer, ">>", TOKEN_REDIR_APPEND, pos);
+        else if (ft_strncmp(str[i], "<", 1) == 0)
+            push(&shell->lexer, "<", TOKEN_REDIR_IN, pos);
+        else if (ft_strncmp(str[i], ">", 1) == 0)
+            push(&shell->lexer, ">", TOKEN_REDIR_OUT, pos);
+        else
+            push(&shell->lexer, str[i], TOKEN_ARG, pos);
+        pos++;
+        i++;
+    }
+    free_split_res(str);
+} */
+

@@ -6,66 +6,11 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/30 15:38:48 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/08 13:30:53 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* void	write_single_quotes(char *input)
-{
-	int	first_quote;
-	int	last_quote;
-	int i = 0;
-	
-	while (input[i])
-	{
-		if(input[i] == '\'')
-		{
-			first_quote = i;
-			break ;
-		}
-		i++;
-	}
-	while (input[i])
-		i++;
-	while (i >= 0)
-	{
-		if(input[i] == '\'')
-		{
-			last_quote = i;
-			break ;
-		}
-		i--;
-	}
-	printf("%s\n", ft_substr(input, first_quote + 1, last_quote - first_quote - 1));
-} */
-
-/* int	correct_single_quotes(char * input)
-{
-	int	nb_quotes;
-	int	i;
-
-	nb_quotes = 0;
-	i = 0;
-	while (input[i])
-	{
-		if (input[i] == '\'')
-			nb_quotes++;
-		i++;
-	}
-	if (nb_quotes >= 1 && (nb_quotes % 2) == 0)
-	{
-		write_single_quotes(input);
-		return (1);
-	}
-	else if (nb_quotes >= 1 && (nb_quotes % 2) == 1)
-	{
-		printf("!!! Error missing quotes etc...\n");
-		return (0);
-	}
-	return (0);
-} */
 
 void expander(t_shell *shell)
 {
