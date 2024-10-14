@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/10/08 13:30:53 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:02:30 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ void expander(t_shell *shell)
 
     dest = NULL;
     lexer = shell->lexer;
-
+	printf("1 `%s`\n", lexer->input);
+	printf("2 `%s`\n", lexer->next->input);
     while (lexer)
     {
         i = 0;
         single_quote = 0;
-
         while (lexer->input[i])
         {
             if (lexer->input[i] == '\'')
@@ -45,7 +45,6 @@ void expander(t_shell *shell)
                     key_env = ft_itoa(shell->exit_status);
                     if (!key_env)
                         return ; // Handle memory allocation failure
-
                     // Set j to skip '$?'
                     j = i + 2;
                 }
@@ -60,12 +59,10 @@ void expander(t_shell *shell)
                              (lexer->input[j] >= '0' && lexer->input[j] <= '9') ||
                              lexer->input[j] == '_'))
                         j++;
-
                     // Extract the key name
                     key = ft_substr(lexer->input, i + 1, j - i - 1);
                     if (!key)
                         return ; // Handle memory allocation failure
-
                     if (ft_strcmp(key, "") == 0)
                     {
                         // If the key is empty, skip the '$' symbol
@@ -80,9 +77,9 @@ void expander(t_shell *shell)
                         key_env = "";
                     free(key);
                 }
-
                 // Extract the parts before and after the variable
                 start = ft_substr(lexer->input, 0, i);
+				printf("start `%s`\n", start);
                 if (!start)
                     return ; // Handle memory allocation failure
 
@@ -127,9 +124,7 @@ void expander(t_shell *shell)
                 i += strlen(key_env);
             }
             else
-            {
                 i++;
-            }
         }
 
         lexer = lexer->next;

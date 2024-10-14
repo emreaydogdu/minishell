@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/10/10 11:12:48 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/14 12:33:53 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	minishell(char **env)
 {
-	struct s_shell	shell;
+	t_shell	shell;
 
 	shell.cmdline = NULL;
 	shell.env = NULL;
@@ -26,7 +26,7 @@ static void	minishell(char **env)
 	{
  		shell.cmdline = readline("\033[36;1m ➜ minishell$ \033[0m");
 		if (!shell.cmdline)
-			return ; 
+			return ;
 		shell.cmdline[ft_strlen(shell.cmdline)] = '\0';
  		add_history(shell.cmdline);
 		lexer(&shell);

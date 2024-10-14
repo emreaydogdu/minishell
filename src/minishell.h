@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/09/23 16:24:14 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/14 12:35:57 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 # include <stdio.h>
 # include <stdlib.h>
-# include <stdio.h>
 # include <string.h>
 # include <unistd.h>
 # include <readline/readline.h>
