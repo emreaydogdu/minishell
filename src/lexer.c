@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:54:47 by chbachir          #+#    #+#             */
-/*   Updated: 2024/10/08 13:31:57 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/12 23:04:43 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,9 @@ void lexer(t_shell *shell)
     if (!str)
     {
         if (error_flag)
-        {
             error(shell, "Lexer: Mismatched quotes detected\n", NULL);
-        }
         else
-        {
             error(shell, "Lexer: Memory allocation failed\n", NULL);
-        }
         return;
     }
 
@@ -81,14 +77,14 @@ void lexer(t_shell *shell)
     shell->lexer = NULL;
     while (str[i] != NULL)
     {
-        if (ft_strncmp(str[i], "|", 1) == 0)
-            push(&shell->lexer, "|", TOKEN_PIPE, pos);
-        else if (ft_strncmp(str[i], "<<", 2) == 0)
-            push(&shell->lexer, "<<", TOKEN_REDIR_HEREDOC, pos);
-        else if (ft_strncmp(str[i], ">>", 2) == 0)
-            push(&shell->lexer, ">>", TOKEN_REDIR_APPEND, pos);
-        else if (ft_strncmp(str[i], "<", 1) == 0)
-            push(&shell->lexer, "<", TOKEN_REDIR_IN, pos);
+		if (ft_strncmp(str[i], "|", 1) == 0)
+			push(&shell->lexer, "|", TOKEN_PIPE, pos);
+		else if (ft_strncmp(str[i], "<<", 2) == 0)
+			push(&shell->lexer, "<<", TOKEN_REDIR_HEREDOC, pos);
+		else if (ft_strncmp(str[i], ">>", 2) == 0)
+			push(&shell->lexer, ">>", TOKEN_REDIR_APPEND, pos);
+		else if (ft_strncmp(str[i], "<", 1) == 0)
+			push(&shell->lexer, "<", TOKEN_REDIR_IN, pos);
         else if (ft_strncmp(str[i], ">", 1) == 0)
             push(&shell->lexer, ">", TOKEN_REDIR_OUT, pos);
         else

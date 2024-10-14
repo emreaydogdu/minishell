@@ -38,6 +38,6 @@ Done ```export HELLO=123``` Segfault\
 compare with bash and fix
 
 `builtin issues`
-40. too many args
+exit . how to handle ? since subject says no argument, but 42testers use args, what about <exit hello> and <exit 42 world> test and compare.
 
 
