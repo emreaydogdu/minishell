@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/10/15 11:11:02 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/15 14:32:10 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void expander(t_shell *shell)
                 }
                 // Extract the parts before and after the variable
                 start = ft_substr(lexer->input, 0, i);
-				printf("start `%s`\n", start);
                 if (!start)
                     return ; // Handle memory allocation failure
 

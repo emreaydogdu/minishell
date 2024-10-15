@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:32:10 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/10/08 13:28:45 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/15 14:41:50 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ void	exec_export(t_shell *shell)
 	char	*val;
 
 	i = 0;
-    printf("shell->cmdline = [%s]\n", shell->cmdline);
-    printf("HERE: [%s]\n", (char *)shell->parser->args->content);
 	while(shell->parser->args)
 	{
 		j = 0;

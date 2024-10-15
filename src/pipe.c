@@ -16,7 +16,6 @@ int	* piping()
 		exit(1);
 	}
 	return pipefd;
-
 }
 
 /* int main(void)
@@ -35,7 +34,7 @@ int	* piping()
 	pid = fork();
 	if (pid == 0)
 	{
-		printf("Lena is there\n");
+		printf("enfant\n");
 		close(pipefd[1]);
 		read(pipefd[0], buffer, 100);
 		return EXIT_SUCCESS;
