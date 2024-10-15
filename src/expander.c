@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/10/15 14:32:10 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:23:08 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void expander(t_shell *shell)
                     free(start);
                     return ; // Handle memory allocation failure
                 }
-
                 // Allocate memory for the new string
                 dest = ft_calloc(strlen(start) + strlen(key_env) + strlen(end) + 1, sizeof(char));
                 if (!dest)
@@ -95,15 +94,14 @@ void expander(t_shell *shell)
                     free(end);
                     return ; // Handle memory allocation failure
                 }
-
                 // Concatenate start, key_env, and end to form the new string
                 ft_strcat(dest, start);
                 ft_strcat(dest, key_env);
                 ft_strcat(dest, end);
-
                 // Update lexer->input with the new string
                 free(lexer->input);
                 lexer->input = ft_strdup(dest);
+
                 if (!lexer->input)
                 {
                     free(start);
@@ -111,19 +109,16 @@ void expander(t_shell *shell)
                     free(dest);
                     return ; // Handle memory allocation failure
                 }
-
                 // Free temporary strings
                 free(start);
                 free(end);
                 free(dest);
-
                 // Move the index to continue parsing after the replaced variable
                 i += strlen(key_env);
             }
             else
                 i++;
         }
-
         lexer = lexer->next;
     }
 }
