@@ -40,4 +40,7 @@ compare with bash and fix
 `builtin issues`
 exit . how to handle ? since subject says no argument, but 42testers use args, what about <exit hello> and <exit 42 world> test and compare.
 
+`HEREDOC issues`
+not working for example `cat << DELIMITER`
+
 

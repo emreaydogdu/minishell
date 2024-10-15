@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 17:16:34 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/10/14 15:02:30 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:11:02 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void expander(t_shell *shell)
 
     dest = NULL;
     lexer = shell->lexer;
-	printf("1 `%s`\n", lexer->input);
-	printf("2 `%s`\n", lexer->next->input);
     while (lexer)
     {
         i = 0;

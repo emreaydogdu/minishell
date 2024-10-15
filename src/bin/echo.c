@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 21:05:13 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/10/02 11:34:52 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:23:48 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void exec_echo(t_shell *shell)
 {
     t_parser    *parser;
     char        *content;
-    char        *original;
+    char		*original;
 
     parser = shell->parser;
     while (parser->args != NULL)
