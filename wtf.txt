@@ -1,0 +1,739 @@
+#ifndef MINISHELL_H
+# define MINISHELL_H
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <signal.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <fcntl.h>
+# include "../libft/libft.h"
+
+
+typedef enum	s_token_type
+{
+	TOKEN_ARG = 0,
+	TOKEN_PIPE,
+	TOKEN_REDIR_APPEND,
+	TOKEN_REDIR_HEREDOC,
+	TOKEN_REDIR_OUT,
+	TOKEN_REDIR_IN,
+	TOKEN_COMMAND
+}	t_token_type;
+
+typedef struct s_lexer
+{
+	char			*input;
+	size_t			pos;
+	int				type;
+	struct s_lexer	*next;
+}	t_lexer;
+
+typedef struct s_parser
+{
+	t_list			*args;
+	int				infile;
+	int				outfile;
+	struct s_parser	*next;
+}	t_parser;
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
+typedef struct s_shell
+{
+	char			*cmdline;
+	char			*tmp_output;
+	int				exit_status;
+	struct s_lexer	*lexer;
+	struct s_parser	*parser;
+	struct s_env	*env;
+}	t_shell;
+
+void	lexer(t_shell *shell);
+void	expander(t_shell *shell);
+void	parser(t_shell *shell);
+
+void	init_env(t_shell *shell, char **env);
+int		env_push(t_env **env, char* key, char *value);
+int		env_pop(t_env **env, char *key);
+
+/* BUILTINS */
+int		is_bin(char *cmd);
+void	exec_bin(t_shell *shell, char *cmd);
+void	exec_echo(t_shell *parser);
+void	exec_cd(t_shell *shell);
+void	exec_pwd(t_shell *shell);
+void	exec_env(t_shell shell);
+void	exec_export(t_shell *shell);
+void	exec_unset(t_shell *shell);
+void	exec_exit(t_shell *shell);
+void	exec_start(t_shell *shell);
+void	exec_cmd(char *path, t_list *args);
+
+/* todo: DELETE */
+void	print_lexer(t_shell shell);
+void	print_cmdtable(t_shell shell);
+
+int		correct_single_quotes(char * input);
+void	write_single_quotes(char *input);
+
+/* HELPER FUNCTIONS */
+char	*trim(char *str);
+void	error(t_shell *shell, char *err_msg, char *args);
+
+// Cleaning
+void	cleanup(t_shell *shell);
+void	free_lexer(t_lexer *lexer);
+void	free_parser(t_parser *parser);
+void	free_env(t_env *env);
+
+int		*piping();
+char 	*get_external_cmd_path(char *cmd);
+char	*ft_getenv(t_shell *shell, char *key);
+
+// Executer
+int		dollar_at_beginning(char *cmdline);
+int		ft_isspace(char c);
+
+#endif
+
+---
+
+NAME	=	minishell
+CC		=	cc
+RL		=	-lreadline
+CFLAGS	=	-g #-Wall -Wextra -Werror
+RM		=	rm -f -r
+
+SRCC	=	minishell.c lexer.c expander.c parser.c printers.c executer.c \
+			environment.c bin/echo.c bin/pwd.c bin/cd.c bin/env.c bin/export.c \
+			bin/unset.c bin/exit.c pathfinder.c pipe.c free.c  error.c \
+			helper.c
+OBJD	=	obj
+OBJDBIN	=	obj/bin
+SRCD	=	src
+SRCS	=	$(addprefix $(SRCD)/,$(SRCC))
+OBJS	=	$(addprefix $(OBJD)/,$(SRCC:.c=.o))
+LIBFT	=	libft/libft.a
+
+all:		$(NAME)
+
+$(LIBFT):
+	@make -C libft
+
+$(NAME):	$(LIBFT) $(OBJS)
+			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(RL)
+			@echo "Compile Minishell"
+
+$(OBJD)/%.o: $(SRCD)/%.c
+			@mkdir -p $(OBJD) $(OBJDBIN)
+			@$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+			@$(RM) $(OBJD)
+			@make clean -C libft
+			@echo "Remove object files"
+
+fclean:		clean
+			@$(RM) $(NAME)
+			@make fclean -C libft
+			@echo "Remove program"
+
+re:			fclean all
+
+.PHONY:		all clean fclean re
+
+
+--
+
+#include "minishell.h"
+
+static void	minishell(char **env)
+{
+	t_shell	shell;
+
+	shell.cmdline = NULL;
+	shell.env = NULL;
+	shell.lexer = NULL;
+	shell.parser = NULL;
+	shell.exit_status = 0;
+	init_env(&shell, env);
+	while (1)
+	{
+ 		shell.cmdline = readline("\033[36;1m ➜ minishell$ \033[0m");
+		if (!shell.cmdline)
+			return ;
+		shell.cmdline[ft_strlen(shell.cmdline)] = '\0';
+ 		add_history(shell.cmdline);
+		lexer(&shell);
+		expander(&shell);
+		parser(&shell);
+		exec_start(&shell);
+		//free(shell.cmdline);
+		cleanup(&shell);
+	}
+	if (shell.env)
+	{
+		free_env(shell.env);
+		shell.env = NULL;
+	}
+	if (shell.cmdline)
+	{
+		free(shell.cmdline);
+		shell.cmdline = NULL;
+	}
+}
+
+int	main(int ac, char **av, char **env)
+{
+	(void) ac;
+	(void) av;
+	minishell(env);
+	return (0);
+}
+
+--
+
+#include "minishell.h"
+
+int	env_push(t_env **env, char *key, char *value)
+{
+	t_env	*last;
+	t_env	*node;
+
+	node = malloc(sizeof(t_env));
+	if (!node)
+		return (0);
+	node->key = key;
+	node->value = value;
+	node->next = NULL;
+	if (*env == NULL)
+		return (*env = node, 1);
+	last = *env;
+	while (last->next != NULL)
+		last = last->next;
+	return (last->next = node, 1);
+}
+int	env_pop(t_env **env, char *key)
+{
+	t_env 	*prev;
+	t_env	*tmp;
+
+	tmp = *env;
+	prev = NULL;
+	while (tmp)
+	{
+		if (ft_strncmp(key, tmp->key, ft_strlen(tmp->key)) == 0)
+		{
+			if (!prev)
+				*env = tmp->next;
+			else
+				prev->next = tmp->next;
+			free(tmp);
+			return (1);
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+void	init_env(t_shell *shell, char **env)
+{
+	int		i;
+	int		j;
+	char	*key;
+	char	*val;
+
+	i = 0;
+	while (env[i])
+	{
+		j = 0;
+		while (env[i][j])
+		{
+			if (env[i][j] == '=')
+				break ;
+			j++;
+		}
+		key = ft_substr(env[i], 0, j);
+		val = ft_substr(env[i], j + 1, ft_strlen(env[i]) - j + 1);
+		env_push(&shell->env, key, val);
+		i++;
+	}
+}
+
+char *ft_getenv(t_shell *shell, char *key)
+{
+	t_env *tmp;
+
+	tmp = shell->env;
+	while (tmp)
+	{
+		if (ft_strcmp(key, tmp->key) == 0)
+			return (tmp->value);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+--
+
+#include "minishell.h"
+
+static int	push(t_lexer **lexer, char *input, t_token_type type, size_t pos)
+{
+	t_lexer	*last;
+	t_lexer	*token;
+
+	token = malloc(sizeof(t_lexer));
+	if (!token)
+		return (0);
+	token->input = ft_strdup(input);
+	if (!token->input)
+	{
+		free(token);
+		return (0);
+	}
+	token->type = type;
+	token->pos = pos;
+	token->next = NULL;
+	if (*lexer == NULL)
+	{
+		*lexer = token;
+		return (1);
+	}
+	last = *lexer;
+	while (last->next != NULL)
+		last = last->next;
+	last->next = token;
+	return (1);
+}
+
+void	free_split_res(char **split_res)
+{
+	int i;
+
+	i = 0;
+	while (split_res[i])
+	{
+		free(split_res[i]);
+		i++;
+	}
+	free(split_res);
+}
+
+void lexer(t_shell *shell)
+{
+    size_t i;
+    size_t pos;
+    char **str;
+    int error_flag = 0;
+
+    str = custom_split(shell->cmdline, &error_flag); // Utilisation de custom_split avec gestion des erreurs
+    if (!str)
+    {
+        if (error_flag)
+            error(shell, "Lexer: Mismatched quotes detected\n", NULL);
+        else
+            error(shell, "Lexer: Memory allocation failed\n", NULL);
+        return;
+    }
+
+    i = 0;
+    pos = 0;
+    shell->lexer = NULL;
+    while (str[i] != NULL)
+    {
+		if (ft_strncmp(str[i], "|", 1) == 0)
+			push(&shell->lexer, "|", TOKEN_PIPE, pos);
+		else if (ft_strncmp(str[i], "<<", 2) == 0)
+			push(&shell->lexer, "<<", TOKEN_REDIR_HEREDOC, pos);
+		else if (ft_strncmp(str[i], ">>", 2) == 0)
+			push(&shell->lexer, ">>", TOKEN_REDIR_APPEND, pos);
+		else if (ft_strncmp(str[i], "<", 1) == 0)
+			push(&shell->lexer, "<", TOKEN_REDIR_IN, pos);
+        else if (ft_strncmp(str[i], ">", 1) == 0)
+            push(&shell->lexer, ">", TOKEN_REDIR_OUT, pos);
+        else
+            push(&shell->lexer, str[i], TOKEN_ARG, pos);
+        pos++;
+        i++;
+    }
+    free_split_res(str);
+}
+
+--
+
+#include "minishell.h"
+
+void expander(t_shell *shell)
+{
+    t_lexer *lexer;
+    int i;
+    int j;
+    int single_quote;
+    char *key;
+    char *key_env;
+    char *start;
+    char *end;
+    char *dest;
+
+    dest = NULL;
+    lexer = shell->lexer;
+    while (lexer)
+    {
+        i = 0;
+        single_quote = 0;
+        while (lexer->input[i])
+        {
+            if (lexer->input[i] == '\'')
+                single_quote = !single_quote;
+
+            if (lexer->input[i] == '$' && !single_quote)
+            {
+                // Handle special variable '$?'
+                if (lexer->input[i + 1] == '?')
+                {
+                    key_env = ft_itoa(shell->exit_status);
+                    if (!key_env)
+                        return ; // Handle memory allocation failure
+                    // Set j to skip '$?'
+                    j = i + 2;
+                }
+                else
+                {
+                    // Find the end of the environment variable name
+                    j = i + 1;
+                    while (lexer->input[j] && lexer->input[j] != ' ' &&
+                           lexer->input[j] != '"' && lexer->input[j] != '\'' &&
+                           ( (lexer->input[j] >= 'A' && lexer->input[j] <= 'Z') ||
+                             (lexer->input[j] >= 'a' && lexer->input[j] <= 'z') ||
+                             (lexer->input[j] >= '0' && lexer->input[j] <= '9') ||
+                             lexer->input[j] == '_'))
+                        j++;
+                    // Extract the key name
+                    key = ft_substr(lexer->input, i + 1, j - i - 1);
+                    if (!key)
+                        return ; // Handle memory allocation failure
+                    if (ft_strcmp(key, "") == 0)
+                    {
+                        // If the key is empty, skip the '$' symbol
+                        free(key);
+                        i++;
+                        continue ;
+                    }
+
+                    // Retrieve the environment variable value
+                    key_env = ft_getenv(shell, key);
+                    if (key_env == NULL)
+                        key_env = "";
+                    free(key);
+                }
+                // Extract the parts before and after the variable
+                start = ft_substr(lexer->input, 0, i);
+                if (!start)
+                    return ; // Handle memory allocation failure
+
+                end = ft_substr(lexer->input, j, strlen(lexer->input) - j);
+                if (!end)
+                {
+                    free(start);
+                    return ; // Handle memory allocation failure
+                }
+                // Allocate memory for the new string
+                dest = ft_calloc(strlen(start) + strlen(key_env) + strlen(end) + 1, sizeof(char));
+                if (!dest)
+                {
+                    free(start);
+                    free(end);
+                    return ; // Handle memory allocation failure
+                }
+                // Concatenate start, key_env, and end to form the new string
+                ft_strcat(dest, start);
+                ft_strcat(dest, key_env);
+                ft_strcat(dest, end);
+                // Update lexer->input with the new string
+                free(lexer->input);
+                lexer->input = ft_strdup(dest);
+
+                if (!lexer->input)
+                {
+                    free(start);
+                    free(end);
+                    free(dest);
+                    return ; // Handle memory allocation failure
+                }
+                // Free temporary strings
+                free(start);
+                free(end);
+                free(dest);
+                // Move the index to continue parsing after the replaced variable
+                i += strlen(key_env);
+            }
+            else
+                i++;
+        }
+        lexer = lexer->next;
+    }
+}
+
+--
+
+#include "minishell.h"
+
+/*
+void print_cmdtable(t_shell shell)
+{
+	t_parser *current_node = shell.parser;
+	int cmd_num = 1;
+
+	printf("Command Table:\n");
+	while (current_node)
+	{
+		printf("\n	Command %d:\n", cmd_num++);
+		t_parser *cmd = (t_parser *)current_node;
+		printf("		infile: %d\n", cmd->infile);
+		printf("		outfile: %d\n", cmd->outfile);
+		int i = 0;
+		if (cmd->args)
+		{
+			while (cmd->args)
+			{
+				printf("		Arg[%d]: %s\n", i, (char *)cmd->args->content);
+				i++;
+				cmd->args = cmd->args->next;
+			}
+		}
+		else
+			printf("  No command arguments.\n");
+		current_node = current_node->next;
+	}
+	printf("------------------------------------------------\n");
+}
+*/
+
+static t_parser *new_cmd_node()
+{
+	t_parser *cmd = malloc(sizeof(t_parser));
+	if (!cmd)
+		return NULL;
+	cmd->args = NULL;
+	cmd->infile = STDIN_FILENO;   // Default to standard input
+	cmd->outfile = STDOUT_FILENO; // Default to standard output
+	cmd->next = NULL;
+	return cmd;
+}
+
+void parser(t_shell *shell)
+{
+	t_parser *parser;
+	t_lexer *lexer;
+	t_list	*node_input;
+
+	shell->parser = new_cmd_node();
+	parser = shell->parser;
+	lexer = shell->lexer;
+	
+	int *pipefd;
+	pipefd = piping();
+	while (lexer)
+	{
+		node_input = ft_lstnew(lexer->input);
+		if (lexer->type == TOKEN_ARG)
+		{
+			ft_lstadd_back(&parser->args, node_input);
+		}
+		else if (lexer->type == TOKEN_REDIR_IN)
+		{
+			lexer = lexer->next;
+			parser->infile = open(lexer->input, O_RDONLY, 777);
+			if (parser->infile == -1)
+			{
+				printf("open failed");
+				return ;
+			}
+		}
+		else if (lexer->type == TOKEN_REDIR_OUT)
+		{
+			lexer = lexer->next;
+			
+			parser->outfile = open(lexer->input, O_CREAT | O_RDWR | O_TRUNC, 777);
+			if (parser->outfile == - 1)
+			{
+				printf("1 open failed");
+				return ;
+			}
+		}
+		else if (lexer->type == TOKEN_REDIR_APPEND)
+		{
+			lexer = lexer->next;
+			parser->outfile = open(lexer->input, O_CREAT | O_RDWR | O_APPEND, 777);
+			if (parser->outfile == - 1)
+			{
+				printf("2 open failed");
+				return ;
+			}
+		}
+		else if (lexer->type == TOKEN_REDIR_HEREDOC)
+		{
+			lexer = lexer->next;
+			
+		}
+		//free(node_input); 
+		lexer = lexer->next;
+		if (lexer && lexer->type == TOKEN_PIPE)
+		{
+			parser->outfile = pipefd[1];
+			parser->next = new_cmd_node();
+			parser = parser->next;
+			parser->infile = pipefd[0];
+		}
+	}
+	
+}
+
+--
+
+static void	exec_path(t_shell *shell, char *cmd)
+{
+	char * cmd_path;
+
+	t_parser *parser;
+	
+	parser = shell->parser;
+	cmd_path = get_external_cmd_path(cmd);
+	if (parser->infile != STDIN_FILENO)
+		dup2(parser->infile, STDIN_FILENO);
+	exec_cmd(cmd_path, parser->args);
+}
+
+void	exec_start(t_shell *shell)
+{
+	t_parser *current_node = shell->parser;
+	while (current_node)
+	{
+		t_parser *cmd = (t_parser *)current_node;
+		while (cmd->args)
+		{
+			char *content = (char *)cmd->args->content;
+			cmd->args = cmd->args->next;
+			exec_bin(shell, content);			
+			break ;
+		}
+		current_node = current_node->next;
+	}
+}
+
+void	exec_bin(t_shell *shell, char *cmd)
+{
+	if (ft_strncmp(cmd, "echo", 4) == 0)
+	{
+		exec_echo(shell);
+		printf("\n");
+	}
+	else if (ft_strncmp(cmd, "pwd", 3) == 0)
+		exec_pwd(shell);
+	else if (ft_strncmp(cmd, "cd", 2) == 0)
+		exec_cd(shell);
+	else if (ft_strncmp(cmd, "export", 6) == 0)
+		exec_export(shell);
+	else if (ft_strncmp(cmd, "unset", 5) == 0)
+		exec_unset(shell);
+	else if (ft_strncmp(cmd, "env", 3) == 0)
+		exec_env(*shell);
+	else if (ft_strncmp(cmd, "exit", 4) == 0 && (shell->cmdline[4] == '\0' || shell->cmdline[4] == ' '))
+		exec_exit(shell);
+	else
+		exec_path(shell, cmd);
+}
+
+--
+
+#include "minishell.h"
+
+void	cleanup(t_shell *shell)
+{
+	if (shell->lexer)
+	{
+		free_lexer(shell->lexer);
+		shell->lexer = NULL;
+	}
+	if (shell->parser)
+	{
+		free_parser(shell->parser);
+		shell->parser = NULL;
+	}
+}
+
+void	free_lexer(t_lexer *lexer)
+{
+	t_lexer *tmp;
+	while (lexer)
+	{
+		tmp = lexer->next;
+		if (lexer->input)
+		{
+			free(lexer->input);
+			lexer->input = NULL;
+		}
+		free(lexer);
+		lexer = tmp;
+	}
+}
+
+void	free_parser(t_parser *parser)
+{
+	t_parser *tmp;
+	
+	t_list *tmp_fullcmd;
+	while (parser)
+	{
+		tmp = parser->next;
+		while (parser->args)
+		{
+			tmp_fullcmd = parser->args->next;
+			if(parser->args)
+			{
+				free(parser->args);
+				parser->args = NULL;
+			}
+			parser->args = tmp_fullcmd;
+		}
+		free(parser);
+		parser = tmp;
+	}
+}
+void	free_env(t_env *env)
+{
+	t_env *tmp;
+	while(env)
+	{
+		tmp = env->next;
+		if (env->key)
+		{
+			free(env->key);
+			env->key = NULL;
+		}
+		free(env);
+		env = tmp;
+	}
+}
+
+--
+
+il s'agit du projet minishell 42.
+lorsque je tape: ➜ minishell$ $HOME
+J'aimerai afficher un message comme cela:
+`bash: /home/username: Is a directory`
+A quel endroit du code fourni devrai-je implementer cela et comment faire ?
+Reponds en francais. Merci pour ton aide precise.
+
+
