@@ -43,4 +43,11 @@ exit . how to handle ? since subject says no argument, but 42testers use args, w
 `HEREDOC issues`
 not working for example `cat << DELIMITER`
 
+Je me suis arrete la:
+➜ minishell$ $KDKKDWJWD
+minishell: /usr/local/sbin/: Is a directory
+free(): invalid pointer
+zsh: IOT instruction (core dumped)  ./minishell
+c1b2c1% 
+
 

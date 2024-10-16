@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:36:16 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/10/15 15:38:25 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:58:09 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void parser(t_shell *shell)
 		if (lexer->type == TOKEN_ARG)
 		{
 			ft_lstadd_back(&parser->args, node_input);
-			printf("handled in parser as an ARG\n");
 		}
 		else if (lexer->type == TOKEN_REDIR_IN)
 		{

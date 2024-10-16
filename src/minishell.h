@@ -6,7 +6,7 @@
 /*   By: chbachir <chbachir@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:02:35 by emaydogd          #+#    #+#             */
-/*   Updated: 2024/10/14 12:35:57 by chbachir         ###   ########.fr       */
+/*   Updated: 2024/10/16 13:21:22 by chbachir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include <fcntl.h>
 # include "../libft/libft.h"
 
@@ -116,7 +117,7 @@ void	write_single_quotes(char *input);
 
 /* HELPER FUNCTIONS */
 char	*trim(char *str);
-void	error(t_shell *shell, char *err_msg, char *args);
+void	error(t_shell *shell, char *err_msg, char *args, int err_num);
 
 // Cleaning
 void	cleanup(t_shell *shell);
@@ -127,5 +128,9 @@ void	free_env(t_env *env);
 int		*piping();
 char 	*get_external_cmd_path(char *cmd);
 char	*ft_getenv(t_shell *shell, char *key);
+
+// Executer
+int		dollar_at_beginning(char *cmdline);
+int		ft_isspace(char c);
 
 #endif
